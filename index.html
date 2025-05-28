@@ -197,6 +197,135 @@
             overflow: hidden;
         }
         
+       .ransomware-file {
+            width: 80px;
+            height: 100px;
+            background: rgba(0, 170, 255, 0.2);
+            border: 1px solid var(--merah);
+            margin: 10px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .ransomware-file i {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .iot-device {
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--cyan);
+            border-radius: 10px;
+            margin: 10px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .iot-device i {
+            font-size: 2em;
+        }
+
+        .deepfake-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            border: 2px solid var(--ungu);
+            overflow: hidden;
+        }
+
+        .deepfake-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            transition: all 0.5s;
+        }
+
+        .deepfake-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .quantum-bit {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, var(--hijau), var(--cyan));
+            border-radius: 50%;
+            display: inline-block;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+       .black-market-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(0, 10, 20, 0.7);
+            border: 1px solid var(--ungu);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .black-market-item:hover {
+            background: rgba(170, 0, 255, 0.2);
+            border-color: var(--hijau);
+        }
+
+        .black-market-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .darkweb-site {
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(0, 5, 15, 0.8);
+            border: 1px solid var(--merah);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .darkweb-site:hover {
+            background: rgba(255, 51, 85, 0.2);
+        }
+
+        .darkweb-content {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px dashed var(--cyan);
+        }
+
+        .tor-browser {
+            position: relative;
+            width: 100%;
+            height: 30px;
+            background: #333;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: -5px;
+        }
+
+        .tor-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--ungu), var(--hijau));
+            border-radius: 5px 0 0 0;
+            transition: width 0.5s;
+        }
+
         .game-panel::before {
             content: "";
             position: absolute;
@@ -1121,12 +1250,109 @@ play this game with havefun, consider yourself a top class hacker - Thank you Mr
 
     <div id="player-stats">
         <h3><i class="fas fa-user-secret"></i> PLAYER STATS</h3>
-        <p><i class="fas fa-gamepad"></i> Completed: <span id="games-completed">0</span>/24 games</p>
+        <p><i class="fas fa-gamepad"></i> Completed: <span id="games-completed">0</span>/26 games</p>
         <p><i class="fas fa-trophy"></i> Hacker Rank: <span id="hacker-rank">Newbie</span></p>
         <p><i class="fas fa-star"></i> XP: <span id="player-xp">0</span></p>
         <p><i class="fas fa-coins"></i> Crypto: <span id="player-crypto">0</span> BTC</p>
     </div>
+    
+            <!-- Game 25: Black Market Hacker -->
+            <div class="game-panel">
+                <h2 class="game-title">BLACK MARKET HACKER</h2>
+                <div class="console" id="blackmarket-console">
+                    > Welcome to the underground black market<br>
+                    > Your crypto: <span id="bm-crypto">0</span> BTC
+                </div>
+                <div id="blackmarket-items">
+                    <!-- Items will be added by JavaScript -->
+                </div>
+                <button class="game-btn" onclick="restockBlackMarket()">
+                    <i class="fas fa-sync-alt"></i> RESTOCK
+                </button>
+                <p>Items bought: <span id="bm-bought">0</span> | Deals: <span id="bm-deals">0</span></p>
+            </div>
 
+            <!-- Game 26: Dark Web Simulator -->
+            <div class="game-panel">
+                <h2 class="game-title">DARK WEB SIMULATOR</h2>
+                <div class="tor-browser">
+                    <div class="tor-progress" id="tor-progress"></div>
+                </div>
+                <div class="console" id="darkweb-console">
+                    > Initializing TOR browser...<br>
+                    > Connecting to hidden services
+                </div>
+                <div id="darkweb-sites">
+                    <!-- Sites will be added by JavaScript -->
+                </div>
+                <button class="game-btn" onclick="connectToDarkWeb()">
+                    <i class="fas fa-network-wired"></i> CONNECT
+                </button>
+                <p>Sites visited: <span id="dw-visited">0</span> | Secrets: <span id="dw-secrets">0</span></p>
+            </div>
+        </div>
+    </div>
+    
+            <!-- Game 27: Ransomware Simulator -->
+            <div class="game-panel">
+                <h2 class="game-title">RANSOMWARE SIMULATOR</h2>
+                <div class="console" id="ransomware-console">
+                    > Encrypting files...<br>
+                    > Pay to decrypt
+                </div>
+                <div id="ransomware-files" style="text-align: center;">
+                    <!-- Files will be added by JavaScript -->
+                </div>
+                <button class="game-btn" onclick="startRansomware()">
+                    <i class="fas fa-lock"></i> ENCRYPT
+                </button>
+                <button class="game-btn" onclick="payRansom()">
+                    <i class="fas fa-coins"></i> PAY (0.05 BTC)
+                </button>
+                <p>Encrypted: <span id="ransomware-encrypted">0</span>/5 | Paid: <span id="ransomware-paid">0</span></p>
+            </div>
+
+            <!-- Game 28: IoT Device Hacker -->
+            <div class="game-panel">
+                <h2 class="game-title">IoT DEVICE HACKER</h2>
+                <div class="console" id="iot-console">
+                    > Scanning for vulnerable IoT devices...
+                </div>
+                <div id="iot-devices" style="text-align: center;">
+                    <!-- Devices will be added by JavaScript -->
+                </div>
+                <button class="game-btn" onclick="scanIoTDevices()">
+                    <i class="fas fa-search"></i> SCAN
+                </button>
+                <button class="game-btn" onclick="hackIoTDevice()">
+                    <i class="fas fa-terminal"></i> HACK
+                </button>
+                <p>Devices: <span id="iot-found">0</span> | Hacked: <span id="iot-hacked">0</span></p>
+            </div>
+
+            <!-- Game 29: Deepfake Generator -->
+            <div class="game-panel">
+                <h2 class="game-title">DEEPFAKE GENERATOR</h2>
+                <div class="console" id="deepfake-console">
+                    > Select target for deepfake manipulation
+                </div>
+                <div class="deepfake-container">
+                    <div class="deepfake-image" id="deepfake-image"></div>
+                </div>
+                <div class="deepfake-controls">
+                    <button class="game-btn" onclick="changeDeepfake('face')">
+                        <i class="fas fa-user"></i> FACE
+                    </button>
+                    <button class="game-btn" onclick="changeDeepfake('voice')">
+                        <i class="fas fa-microphone"></i> VOICE
+                    </button>
+                    <button class="game-btn" onclick="generateDeepfake()">
+                        <i class="fas fa-magic"></i> GENERATE
+                    </button>
+                </div>
+                <p>Quality: <span id="deepfake-quality">0</span>% | Fakes: <span id="deepfake-count">0</span></p>
+            </div>
+            
     <div id="completion-badge" class="completion-badge">
         <h2><i class="fas fa-trophy"></i> MISSION COMPLETE!</h2>
         <p>Congratulations, elite hacker! You've successfully completed all challenges and proven your skills.</p>
@@ -1134,7 +1360,7 @@ play this game with havefun, consider yourself a top class hacker - Thank you Mr
         <div class="signature">- Mr. Arcel -</div>
         <button class="game-btn" onclick="hideBadge()" style="margin-top: 30px; padding: 12px 30px;">CONTINUE HACKING</button>
     </div>
-
+    
     <!-- Audio Elements -->
     <audio id="sound-hack" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3"></audio>
     <audio id="sound-success" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3"></audio>
@@ -2839,6 +3065,501 @@ play this game with havefun, consider yourself a top class hacker - Thank you Mr
                 rotateDeg = (rotateDeg + 0.2) % 360;
                 profilePic.style.transform = `rotate(${rotateDeg}deg)`;
             }, 50);
+        };
+        
+       // ================= GAME 25: BLACK MARKET HACKER =================
+        let blackMarketItems = [];
+        let bmBought = 0;
+        let bmDeals = 0;
+
+        const bmItemsDatabase = [
+            { name: "Zero-Day Exploit", price: 0.05, description: "Unpatched vulnerability for major OS" },
+            { name: "Botnet Access", price: 0.03, description: "Network of 10,000 infected devices" },
+            { name: "Stolen Credit Cards", price: 0.01, description: "Package of 100 valid credit cards" },
+            { name: "Fake Passports", price: 0.08, description: "High-quality forged documents" },
+            { name: "DDoS Service", price: 0.02, description: "24-hour attack on any target" },
+            { name: "Ransomware Kit", price: 0.07, description: "Complete package with builder" },
+            { name: "Celebrity Data", price: 0.04, description: "Private photos and information" },
+            { name: "Bank Credentials", price: 0.06, description: "Access to high-net-worth accounts" }
+        ];
+
+        function initBlackMarket() {
+            restockBlackMarket();
+            updateBMCrypto();
+        }
+
+        function restockBlackMarket() {
+            document.getElementById('sound-hack').play();
+            blackMarketItems = [];
+            const container = document.getElementById('blackmarket-items');
+            container.innerHTML = "";
+            
+            // Get 4 random items
+            const shuffled = [...bmItemsDatabase].sort(() => 0.5 - Math.random());
+            blackMarketItems = shuffled.slice(0, 4);
+            
+            // Display items
+            blackMarketItems.forEach((item, index) => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'black-market-item';
+                itemElement.innerHTML = `
+                    <span>${item.name}</span>
+                    <span>${item.price.toFixed(2)} BTC</span>
+                `;
+                itemElement.onclick = () => buyBlackMarketItem(index);
+                
+                // Check if player can afford
+                if (playerCrypto < item.price) {
+                    itemElement.classList.add('disabled');
+                }
+                
+                container.appendChild(itemElement);
+            });
+            
+            document.getElementById('blackmarket-console').innerHTML = `
+                > Black market restocked<br>
+                > Your crypto: ${playerCrypto.toFixed(6)} BTC
+            `;
+        }
+
+        function buyBlackMarketItem(index) {
+            const item = blackMarketItems[index];
+            
+            if (playerCrypto < item.price) {
+                document.getElementById('sound-error').play();
+                document.getElementById('blackmarket-console').innerHTML = `
+                    > <span style="color:var(--merah)">Insufficient funds!</span><br>
+                    > Need ${item.price.toFixed(2)} BTC
+                `;
+                return;
+            }
+            
+            playerCrypto -= item.price;
+            bmBought++;
+            bmDeals += item.price;
+            
+            document.getElementById('sound-cash').play();
+            document.getElementById('blackmarket-console').innerHTML = `
+                > <span style="color:var(--hijau)">Purchased:</span> ${item.name}<br>
+                > ${item.description}
+            `;
+            
+            document.getElementById('bm-bought').textContent = bmBought;
+            document.getElementById('bm-deals').textContent = bmDeals.toFixed(2);
+            updateBMCrypto();
+            updateStats();
+            
+            // Add XP based on item value
+            addXP(Math.floor(item.price * 100));
+            
+            // Check for completion
+            if (bmBought >= 5 && completedGames < 26) {
+                completedGames++;
+                updateStats();
+            }
+        }
+
+        function updateBMCrypto() {
+            document.getElementById('bm-crypto').textContent = playerCrypto.toFixed(6);
+        }
+
+        // ================= GAME 26: DARK WEB SIMULATOR =================
+        let dwVisited = 0;
+        let dwSecrets = 0;
+        let isTorConnected = false;
+
+        const darkwebSites = [
+            { 
+                name: "Hidden Forum", 
+                url: "http://darkforumzxy.onion", 
+                content: "> Welcome to the underground forum\n> Latest exploits and zero-days for sale\n> FBI has been cracking down recently",
+                hasSecret: true
+            },
+            { 
+                name: "Data Market", 
+                url: "http://databazzar7xq.onion", 
+                content: "> Stolen databases for sale\n> Credit cards | Passwords | Personal data\n> Bitcoin payments only",
+                hasSecret: false
+            },
+            { 
+                name: "Hacking Services", 
+                url: "http://h4x0r5erv1c3.onion", 
+                content: "> Professional hacking team\n> DDoS | Phishing | Custom malware\n> Contact for prices",
+                hasSecret: true
+            },
+            { 
+                name: "WikiLeaks Mirror", 
+                url: "http://wlkr34kyz.onion", 
+                content: "> Classified documents archive\n> Government secrets | Corporate leaks\n> Submit your own leaks anonymously",
+                hasSecret: false
+            },
+            { 
+                name: "Secret Chat", 
+                url: "http://s3cr3tch4t.onion", 
+                content: "> Encrypted anonymous messaging\n> No logs | No metadata\n> Passphrase required for private rooms",
+                hasSecret: true
+            }
+        ];
+
+        function connectToDarkWeb() {
+            if (isTorConnected) return;
+            
+            document.getElementById('sound-hack').play();
+            document.getElementById('darkweb-console').innerHTML = "> Connecting to TOR network...";
+            
+            // Animate connection progress
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                    onTorConnected();
+                }
+                document.getElementById('tor-progress').style.width = `${progress}%`;
+            }, 200);
+        }
+        
+       // ================= GAME 27: RANSOMWARE SIMULATOR =================
+        let encryptedFiles = 0;
+        let paidRansoms = 0;
+        let isEncrypting = false;
+
+        function startRansomware() {
+            if (isEncrypting) return;
+            
+            document.getElementById('sound-hack').play();
+            isEncrypting = true;
+            encryptedFiles = 0;
+            document.getElementById('ransomware-encrypted').textContent = '0';
+            
+            const container = document.getElementById('ransomware-files');
+            container.innerHTML = "";
+            
+            // Create 5 files to encrypt
+            const fileIcons = ['file-alt', 'file-image', 'file-video', 'file-code', 'file-archive'];
+            for (let i = 0; i < 5; i++) {
+                const file = document.createElement('div');
+                file.className = 'ransomware-file';
+                file.innerHTML = `<i class="fas fa-${fileIcons[i]}"></i>File_${i+1}.dat`;
+                container.appendChild(file);
+                
+                // Encrypt file after delay
+                setTimeout((index) => {
+                    file.style.background = 'rgba(255, 51, 85, 0.3)';
+                    file.innerHTML = `<i class="fas fa-lock"></i>ENC_${index}.crypt`;
+                    encryptedFiles++;
+                    document.getElementById('ransomware-encrypted').textContent = encryptedFiles;
+                    
+                    if (encryptedFiles === 5) {
+                        document.getElementById('ransomware-console').innerHTML = 
+                            "> <span style='color:var(--merah)'>ALL FILES ENCRYPTED!</span><br>" +
+                            "> Pay 0.05 BTC to decrypt";
+                        isEncrypting = false;
+                    }
+                }, 1000 * (i + 1), i + 1);
+            }
+            
+            document.getElementById('ransomware-console').innerHTML = "> Encrypting files...";
+        }
+
+        function payRansom() {
+            if (encryptedFiles < 5 || playerCrypto < 0.05) {
+                document.getElementById('sound-error').play();
+                document.getElementById('ransomware-console').innerHTML = 
+                    "> <span style='color:var(--merah)'>Not enough files encrypted or insufficient BTC!</span>";
+                return;
+            }
+            
+            playerCrypto -= 0.05;
+            paidRansoms++;
+            updateStats();
+            
+            document.getElementById('sound-cash').play();
+            document.getElementById('ransomware-paid').textContent = paidRansoms;
+            document.getElementById('ransomware-console').innerHTML = 
+                "> <span style='color:var(--hijau)'>Payment received! Files decrypted.</span>";
+            
+            // Decrypt files
+            const files = document.querySelectorAll('.ransomware-file');
+            files.forEach(file => {
+                file.style.background = 'rgba(0, 255, 136, 0.3)';
+                file.innerHTML = `<i class="fas fa-unlock"></i>DECRYPTED`;
+            });
+            
+            addXP(10);
+            if (paidRansoms >= 3 && completedGames < 30) {
+                completedGames++;
+                updateStats();
+            }
+        }
+
+        // ================= GAME 28: IoT DEVICE HACKER =================
+        let iotDevices = [];
+        let iotFound = 0;
+        let iotHacked = 0;
+
+        function scanIoTDevices() {
+            document.getElementById('sound-hack').play();
+            iotDevices = [];
+            iotFound = 0;
+            
+            const container = document.getElementById('iot-devices');
+            container.innerHTML = "";
+            
+            // Create 3-5 random IoT devices
+            const deviceTypes = [
+                { icon: 'thermometer-half', name: 'Thermostat' },
+                { icon: 'camera', name: 'Security Cam' },
+                { icon: 'lightbulb', name: 'Smart Bulb' },
+                { icon: 'tv', name: 'Smart TV' },
+                { icon: 'lock', name: 'Smart Lock' }
+            ];
+            
+            const numDevices = 3 + Math.floor(Math.random() * 3);
+            for (let i = 0; i < numDevices; i++) {
+                const type = deviceTypes[Math.floor(Math.random() * deviceTypes.length)];
+                const device = document.createElement('div');
+                device.className = 'iot-device';
+                device.innerHTML = `<i class="fas fa-${type.icon}"></i>${type.name}`;
+                device.dataset.vulnerable = Math.random() > 0.5;
+                container.appendChild(device);
+                
+                iotDevices.push(device);
+            }
+            
+            iotFound = numDevices;
+            document.getElementById('iot-found').textContent = iotFound;
+            document.getElementById('iot-console').innerHTML = 
+                `> Found ${numDevices} IoT devices<br>` +
+                "> Click to select vulnerable device";
+        }
+
+        function hackIoTDevice() {
+            const vulnerableDevices = iotDevices.filter(d => d.dataset.vulnerable === 'true');
+            if (vulnerableDevices.length === 0) {
+                document.getElementById('sound-error').play();
+                document.getElementById('iot-console').innerHTML = 
+                    "> <span style='color:var(--merah)'>No vulnerable devices selected!</span>";
+                return;
+            }
+            
+            document.getElementById('sound-hack').play();
+            const device = vulnerableDevices[0];
+            device.style.background = 'rgba(255, 51, 85, 0.5)';
+            device.innerHTML = '<i class="fas fa-skull-crossbones"></i>HACKED';
+            device.dataset.vulnerable = 'false';
+            
+            iotHacked++;
+            document.getElementById('iot-hacked').textContent = iotHacked;
+            document.getElementById('iot-console').innerHTML = 
+                "> <span style='color:var(--hijau)'>Device compromised!</span><br>" +
+                "> Root access achieved";
+            
+            addXP(8);
+            addCrypto(0.0003);
+            
+            if (iotHacked >= 5 && completedGames < 30) {
+                completedGames++;
+                updateStats();
+            }
+        }
+
+        // ================= GAME 29: DEEPFAKE GENERATOR =================
+        let deepfakeQuality = 0;
+        let deepfakeCount = 0;
+        const deepfakeImages = [
+            'url("https://i.imgur.com/JK1Qw5a.jpg")',
+            'url("https://i.imgur.com/3JYQZ7y.jpg")',
+            'url("https://i.imgur.com/5X9wZQJ.jpg")',
+            'url("https://i.imgur.com/7Y9wZQJ.jpg")'
+        ];
+        let currentImage = 0;
+
+        function initDeepfake() {
+            document.getElementById('deepfake-image').style.backgroundImage = deepfakeImages[0];
+            document.getElementById('deepfake-quality').textContent = '0';
+        }
+
+        function changeDeepfake(type) {
+            document.getElementById('sound-typing').play();
+            const qualityChange = type === 'face' ? 15 : 10;
+            deepfakeQuality = Math.min(100, deepfakeQuality + qualityChange);
+            document.getElementById('deepfake-quality').textContent = deepfakeQuality;
+            
+            document.getElementById('deepfake-console').innerHTML = 
+                `> Adjusting ${type} parameters...<br>` +
+                `> Quality: ${deepfakeQuality}%`;
+        }
+
+        function generateDeepfake() {
+            if (deepfakeQuality < 30) {
+                document.getElementById('sound-error').play();
+                document.getElementById('deepfake-console').innerHTML = 
+                    "> <span style='color:var(--merah)'>Quality too low! Minimum 30% required</span>";
+                return;
+            }
+            
+            document.getElementById('sound-success').play();
+            deepfakeCount++;
+            currentImage = (currentImage + 1) % deepfakeImages.length;
+            document.getElementById('deepfake-image').style.backgroundImage = deepfakeImages[currentImage];
+            document.getElementById('deepfake-count').textContent = deepfakeCount;
+            
+            document.getElementById('deepfake-console').innerHTML = 
+                "> <span style='color:var(--hijau)'>Deepfake generated!</span><br>" +
+                "> Ready for dissemination";
+            
+            addXP(5);
+            if (deepfakeCount >= 3 && completedGames < 30) {
+                completedGames++;
+                updateStats();
+            }
+            
+            // Reset quality
+            deepfakeQuality = 0;
+            document.getElementById('deepfake-quality').textContent = '0';
+        }
+
+        // ================= GAME 30: QUANTUM CRYPTOGRAPHY =================
+        let quantumBits = [];
+        let quantumEntangled = 0;
+        let quantumSecure = 0;
+
+        function initQuantumBits() {
+            document.getElementById('sound-hack').play();
+            quantumBits = [];
+            quantumEntangled = 0;
+            
+            const container = document.getElementById('quantum-bits');
+            container.innerHTML = "";
+            
+            // Create 5 quantum bits
+            for (let i = 0; i < 5; i++) {
+                const bit = document.createElement('div');
+                bit.className = 'quantum-bit';
+                bit.dataset.entangled = 'false';
+                bit.onclick = function() { toggleQuantumBit(this); };
+                container.appendChild(bit);
+                quantumBits.push(bit);
+            }
+            
+            document.getElementById('quantum-entangled').textContent = '0';
+            document.getElementById('quantum-console').innerHTML = 
+                "> Quantum bits initialized<br>" +
+                "> Click to entangle qubits";
+        }
+
+        function toggleQuantumBit(bit) {
+            if (bit.dataset.entangled === 'true') {
+                bit.dataset.entangled = 'false';
+                bit.classList.remove('entangled');
+                quantumEntangled--;
+            } else {
+                bit.dataset.entangled = 'true';
+                bit.classList.add('entangled');
+                quantumEntangled++;
+            }
+            
+            document.getElementById('quantum-entangled').textContent = quantumEntangled;
+            document.getElementById('quantum-console').innerHTML = 
+                `> ${quantumEntangled} qubits entangled<br>` +
+                "> Ready for secure measurement";
+        }
+
+        function measureQuantumBits() {
+            if (quantumEntangled < 2) {
+                document.getElementById('sound-error').play();
+                document.getElementById('quantum-console').innerHTML = 
+                    "> <span style='color:var(--merah)'>Need at least 2 entangled qubits!</span>";
+                return;
+            }
+            
+            document.getElementById('sound-success').play();
+            quantumSecure++;
+            document.getElementById('quantum-secure').textContent = quantumSecure;
+            
+            document.getElementById('quantum-console').innerHTML = 
+                "> <span style='color:var(--hijau)'>Quantum key distribution successful!</span><br>" +
+                "> Communication channel secured";
+            
+            addXP(10);
+            addCrypto(0.0005);
+            
+            if (quantumSecure >= 3 && completedGames < 30) {
+                completedGames++;
+                updateStats();
+            }
+            
+            // Reset bits
+            quantumBits.forEach(bit => {
+                bit.dataset.entangled = 'false';
+                bit.classList.remove('entangled');
+            });
+            quantumEntangled = 0;
+            document.getElementById('quantum-entangled').textContent = '0';
+        }
+
+        // Update window.onload to initialize new games
+        window.onload = function() {
+            // Previous initialization code remains the same
+            initDeepfake();
+        }
+
+        function onTorConnected() {
+            isTorConnected = true;
+            document.getElementById('darkweb-console').innerHTML = "> <span style='color:var(--hijau)'>TOR connection established!</span>";
+            document.getElementById('sound-success').play();
+            
+            // Display dark web sites
+            const container = document.getElementById('darkweb-sites');
+            container.innerHTML = "";
+            
+            darkwebSites.forEach((site, index) => {
+                const siteElement = document.createElement('div');
+                siteElement.className = 'darkweb-site';
+                siteElement.innerHTML = `
+                    <div>${site.name} <span style="color:var(--cyan)">${site.url}</span></div>
+                    <div class="darkweb-content" id="dw-content-${index}">
+                        ${site.content.replace(/\n/g, '<br>')}
+                        ${site.hasSecret ? '<br><span style="color:var(--hijau)">> SECRET DATA FOUND!</span>' : ''}
+                    </div>
+                `;
+                siteElement.onclick = () => visitDarkWebSite(index);
+                container.appendChild(siteElement);
+            });
+        }
+
+        function visitDarkWebSite(index) {
+            if (!isTorConnected) return;
+            
+            const site = darkwebSites[index];
+            const content = document.getElementById(`dw-content-${index}`);
+            
+            if (content.style.display === 'block') return;
+            
+            document.getElementById('sound-typing').play();
+            content.style.display = 'block';
+            dwVisited++;
+            document.getElementById('dw-visited').textContent = dwVisited;
+            
+            if (site.hasSecret) {
+                dwSecrets++;
+                document.getElementById('dw-secrets').textContent = dwSecrets;
+                addXP(10);
+                addCrypto(0.0005);
+                
+                if (dwSecrets >= 3 && completedGames < 26) {
+                    completedGames++;
+                    updateStats();
+                }
+            }
+        }
+
+        // Update window.onload to initialize new games
+        window.onload = function() {
+            // Previous initialization code remains the same
+            initBlackMarket();
         };
     </script>
 </body>
