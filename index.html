@@ -178,6 +178,67 @@
             margin: auto;
         }
         
+       email-container {
+            background: rgba(0, 10, 20, 0.8);
+            border: 1px solid var(--cyan);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .email-container:hover {
+            border-color: var(--hijau);
+        }
+
+        .email-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed var(--cyan);
+            padding-bottom: 5px;
+        }
+
+        .email-subject {
+            font-weight: bold;
+            color: var(--hijau);
+        }
+
+        .email-preview {
+            color: var(--teks);
+            font-size: 0.9em;
+        }
+
+        .phishing-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .phishing-option {
+            padding: 8px 15px;
+            margin: 5px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--ungu);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .phishing-option:hover {
+            background: rgba(170, 0, 255, 0.2);
+        }
+
+        .phishing-result {
+            min-height: 50px;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(0, 5, 15, 0.7);
+            border: 1px solid var(--biru);
+            border-radius: 5px;
+        }
+        
         .game-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
@@ -1250,7 +1311,7 @@ play this game with havefun, consider yourself a top class hacker - Thank you Mr
 
     <div id="player-stats">
         <h3><i class="fas fa-user-secret"></i> PLAYER STATS</h3>
-        <p><i class="fas fa-gamepad"></i> Completed: <span id="games-completed">0</span>/26 games</p>
+        <p><i class="fas fa-gamepad"></i> Completed: <span id="games-completed">0</span>/30 games</p>
         <p><i class="fas fa-trophy"></i> Hacker Rank: <span id="hacker-rank">Newbie</span></p>
         <p><i class="fas fa-star"></i> XP: <span id="player-xp">0</span></p>
         <p><i class="fas fa-coins"></i> Crypto: <span id="player-crypto">0</span> BTC</p>
@@ -1352,6 +1413,35 @@ play this game with havefun, consider yourself a top class hacker - Thank you Mr
                 </div>
                 <p>Quality: <span id="deepfake-quality">0</span>% | Fakes: <span id="deepfake-count">0</span></p>
             </div>
+            
+           <div class="game-panel">
+                <h2 class="game-title">PHISHING SIMULATOR</h2>
+                <div class="console" id="phishing-console">
+                    > Craft the perfect phishing email<br>
+                    > Trick users into revealing credentials
+                </div>
+                <div id="phishing-email" class="email-container">
+                    <div class="email-header">
+                        <div class="email-from">From: <span id="email-sender">security@bank.com</span></div>
+                        <div class="email-date">Today, 10:30 AM</div>
+                    </div>
+                    <div class="email-subject" id="email-subject">Urgent: Your Account Security Alert</div>
+                    <div class="email-preview" id="email-preview">Dear customer, we've detected suspicious activity on your account. Please verify your details immediately...</div>
+                </div>
+                <div class="phishing-options" id="phishing-options">
+                    <!-- Options will be added by JavaScript -->
+                </div>
+                <div class="phishing-result" id="phishing-result"></div>
+                <button class="game-btn" onclick="sendPhishingEmail()">
+                    <i class="fas fa-paper-plane"></i> SEND EMAIL
+                </button>
+                <button class="game-btn" onclick="newPhishingScenario()">
+                    <i class="fas fa-redo"></i> NEW SCENARIO
+                </button>
+                <p>Success: <span id="phishing-success">0</span> | Failed: <span id="phishing-failed">0</span></p>
+            </div>
+        </div>
+    </div>
             
     <div id="completion-badge" class="completion-badge">
         <h2><i class="fas fa-trophy"></i> MISSION COMPLETE!</h2>
@@ -3529,6 +3619,151 @@ play this game with havefun, consider yourself a top class hacker - Thank you Mr
                 container.appendChild(siteElement);
             });
         }
+        
+       // ================= GAME 30: PHISHING SIMULATOR =================
+        let phishingSuccess = 0;
+        let phishingFailed = 0;
+        let currentScenario = {};
+        let selectedOptions = [];
+
+        const phishingScenarios = [
+            {
+                id: 1,
+                sender: "security@bank.com",
+                subject: "Urgent: Your Account Security Alert",
+                preview: "Dear customer, we've detected suspicious activity on your account. Please verify your details immediately...",
+                options: [
+                    { text: "Make sender look more official", value: 0.3, type: "sender" },
+                    { text: "Add bank logo to email", value: 0.2, type: "appearance" },
+                    { text: "Create fake login page", value: 0.4, type: "payload" },
+                    { text: "Use urgent language", value: 0.1, type: "psychology" }
+                ],
+                difficulty: 0.7
+            },
+            {
+                id: 2,
+                sender: "support@netflix.com",
+                subject: "Your Subscription Payment Failed",
+                preview: "We couldn't process your last payment. Update your payment method to avoid service interruption...",
+                options: [
+                    { text: "Spoof sender address", value: 0.2, type: "sender" },
+                    { text: "Include viewing history", value: 0.3, type: "personalization" },
+                    { text: "Offer discount if updated", value: 0.2, type: "psychology" },
+                    { text: "Clone Netflix login page", value: 0.3, type: "payload" }
+                ],
+                difficulty: 0.6
+            },
+            {
+                id: 3,
+                sender: "no-reply@irs.gov",
+                subject: "Tax Refund Notification",
+                preview: "You have an unclaimed tax refund of $328. Click to claim your refund now...",
+                options: [
+                    { text: "Use government seals", value: 0.3, type: "appearance" },
+                    { text: "Include fake case number", value: 0.2, type: "personalization" },
+                    { text: "Threaten with penalty", value: 0.2, type: "psychology" },
+                    { text: "Create fake tax form", value: 0.3, type: "payload" }
+                ],
+                difficulty: 0.8
+            }
+        ];
+
+        function initPhishingGame() {
+            newPhishingScenario();
+        }
+
+        function newPhishingScenario() {
+            document.getElementById('sound-hack').play();
+            selectedOptions = [];
+            currentScenario = phishingScenarios[Math.floor(Math.random() * phishingScenarios.length)];
+            
+            // Update email display
+            document.getElementById('email-sender').textContent = currentScenario.sender;
+            document.getElementById('email-subject').textContent = currentScenario.subject;
+            document.getElementById('email-preview').textContent = currentScenario.preview;
+            
+            // Create options
+            const optionsContainer = document.getElementById('phishing-options');
+            optionsContainer.innerHTML = "";
+            
+            currentScenario.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'phishing-option';
+                optionElement.textContent = option.text;
+                optionElement.onclick = () => selectPhishingOption(index);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            document.getElementById('phishing-result').innerHTML = "";
+            document.getElementById('phishing-console').innerHTML = 
+                "> New phishing scenario loaded<br>" +
+                "> Select techniques to improve your email";
+        }
+
+        function selectPhishingOption(index) {
+            const option = currentScenario.options[index];
+            if (selectedOptions.includes(index)) {
+                // Deselect
+                selectedOptions = selectedOptions.filter(i => i !== index);
+                document.getElementById('phishing-options').children[index].style.background = 'rgba(0, 0, 0, 0.5)';
+            } else {
+                // Select
+                selectedOptions.push(index);
+                document.getElementById('phishing-options').children[index].style.background = 'rgba(0, 170, 255, 0.3)';
+            }
+            
+            document.getElementById('sound-typing').play();
+        }
+
+        function sendPhishingEmail() {
+            if (selectedOptions.length === 0) {
+                document.getElementById('sound-error').play();
+                document.getElementById('phishing-result').innerHTML = 
+                    "> <span style='color:var(--merah)'>No techniques selected! Email ignored.</span>";
+                return;
+            }
+            
+            // Calculate success chance
+            let successChance = 0;
+            selectedOptions.forEach(index => {
+                successChance += currentScenario.options[index].value;
+            });
+            successChance /= currentScenario.difficulty;
+            
+            // Determine result
+            const isSuccess = Math.random() < successChance;
+            
+            if (isSuccess) {
+                phishingSuccess++;
+                document.getElementById('phishing-success').textContent = phishingSuccess;
+                document.getElementById('sound-success').play();
+                
+                const credentials = `user${Math.floor(Math.random() * 1000)}@email.com : p@ssw0rd${Math.floor(Math.random() * 100)}`;
+                document.getElementById('phishing-result').innerHTML = 
+                    "> <span style='color:var(--hijau)'>PHISHING SUCCESS!</span><br>" +
+                    "> Credentials captured: <span style='color:var(--merah)'>" + credentials + "</span>";
+                
+                addXP(10);
+                addCrypto(0.0005);
+                
+                if (phishingSuccess >= 3 && completedGames < 31) {
+                    completedGames++;
+                    updateStats();
+                }
+            } else {
+                phishingFailed++;
+                document.getElementById('phishing-failed').textContent = phishingFailed;
+                document.getElementById('sound-error').play();
+                
+                document.getElementById('phishing-result').innerHTML = 
+                    "> <span style='color:var(--merah)'>PHISHING FAILED!</span><br>" +
+                    "> Target reported your email as suspicious";
+            }
+            
+            document.getElementById('phishing-console').innerHTML = 
+                `> Success chance: ${Math.floor(successChance * 100)}%<br>` +
+                `> Used ${selectedOptions.length} techniques`;
+        }
 
         function visitDarkWebSite(index) {
             if (!isTorConnected) return;
@@ -3549,7 +3784,7 @@ play this game with havefun, consider yourself a top class hacker - Thank you Mr
                 addXP(10);
                 addCrypto(0.0005);
                 
-                if (dwSecrets >= 3 && completedGames < 26) {
+                if (dwSecrets >= 3 && completedGames < 30) {
                     completedGames++;
                     updateStats();
                 }
