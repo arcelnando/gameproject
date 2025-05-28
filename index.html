@@ -1,0 +1,2845 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCEL'S HACKER GAME CENTER - PRO</title>
+    <style>
+        :root {
+            --hijau: #00ff88;
+            --merah: #ff3355;
+            --biru: #00aaff;
+            --ungu: #aa00ff;
+            --kuning: #ffff00;
+            --cyan: #00ffff;
+            --bg: #0a0a12;
+            --teks: #e0e0e0;
+            --glow: 0 0 10px;
+            --matrix-color: rgba(0, 255, 136, 0.1);
+        }
+        
+        @font-face {
+            font-family: 'HackerFont';
+            src: url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        }
+        
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: var(--bg);
+            color: var(--teks);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Matrix Rain Enhanced */
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.15;
+        }
+        
+        /* Header dengan efek lebih keren */
+        header {
+            background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(10,2,30,0.9) 100%);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--ungu);
+            box-shadow: 0 10px 40px rgba(170, 0, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                transparent 65%,
+                rgba(0, 255, 136, 0.15) 75%,
+                transparent 85%
+            );
+            animation: shine 6s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-150%); }
+            100% { transform: translateX(150%); }
+        }
+        
+        h1 {
+            margin: 0;
+            text-shadow: 
+                0 0 15px var(--ungu), 
+                0 0 30px rgba(170, 0, 255, 0.6),
+                0 0 45px rgba(0, 170, 255, 0.3);
+            letter-spacing: 8px;
+            font-size: 3em;
+            background: linear-gradient(135deg, var(--hijau), var(--biru), var(--ungu));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: titleGlow 4s ease-in-out infinite alternate;
+            margin-bottom: 10px;
+        }
+        
+        @keyframes titleGlow {
+            0% { 
+                text-shadow: 
+                    0 0 15px var(--ungu),
+                    0 0 30px rgba(170, 0, 255, 0.6);
+            }
+            50% { 
+                text-shadow: 
+                    0 0 25px var(--biru),
+                    0 0 50px rgba(0, 170, 255, 0.6);
+            }
+            100% { 
+                text-shadow: 
+                    0 0 15px var(--hijau),
+                    0 0 30px rgba(0, 255, 136, 0.6);
+            }
+        }
+        
+        .subtitle {
+            color: var(--biru);
+            margin-top: 10px;
+            font-size: 1.3em;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
+        }
+        
+        /* Profile Section */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px auto;
+            max-width: 900px;
+            padding: 20px;
+            background: rgba(0,5,15,0.6);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid var(--hijau);
+            object-fit: cover;
+            box-shadow: 
+                0 0 20px var(--ungu),
+                inset 0 0 20px rgba(0,0,0,0.5);
+            transition: all 0.4s;
+        }
+        
+        .profile-pic:hover {
+            transform: rotate(5deg) scale(1.05);
+            box-shadow: 
+                0 0 30px var(--ungu),
+                inset 0 0 15px rgba(0,0,0,0.7);
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .profile-info h2 {
+            color: var(--biru);
+            margin-top: 0;
+            border-bottom: 1px dashed var(--hijau);
+            padding-bottom: 10px;
+        }
+        
+        .fun-fact {
+            background: rgba(0, 10, 30, 0.5);
+            padding: 15px;
+            border-left: 3px solid var(--ungu);
+            border-radius: 0 5px 5px 0;
+            margin-top: 15px;
+        }
+        
+        /* Game Container Enhanced */
+        .container {
+            padding: 30px;
+            max-width: 1800px;
+            margin: auto;
+        }
+        
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .game-panel {
+            background: rgba(0, 5, 15, 0.7);
+            border: 1px solid var(--biru);
+            padding: 25px;
+            border-radius: 10px;
+            min-height: 350px;
+            transition: all 0.4s;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-panel::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(0, 255, 136, 0.05) 0%,
+                rgba(0, 170, 255, 0.05) 50%,
+                rgba(170, 0, 255, 0.05) 100%
+            );
+            z-index: -1;
+        }
+        
+        .game-panel::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--hijau), var(--biru), var(--ungu));
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+        
+        .game-panel:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 170, 255, 0.4);
+            border-color: var(--hijau);
+        }
+        
+        .game-panel:hover::after {
+            transform: scaleX(1);
+        }
+        
+        .game-title {
+            color: var(--biru);
+            border-bottom: 1px dashed var(--hijau);
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            text-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
+        }
+        
+        .game-title::before {
+            content: ">";
+            margin-right: 12px;
+            color: var(--hijau);
+            text-shadow: 0 0 10px var(--hijau);
+        }
+        
+        .game-btn {
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--hijau);
+            border: 1px solid var(--hijau);
+            padding: 12px 22px;
+            margin: 10px 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1em;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.1);
+        }
+        
+        .game-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 255, 136, 0.3),
+                transparent
+            );
+            transition: all 0.6s;
+        }
+        
+        .game-btn:hover {
+            background: rgba(0, 255, 136, 0.15);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+            transform: translateY(-3px);
+        }
+        
+        .game-btn:hover::before {
+            left: 100%;
+        }
+        
+        .console {
+            background: rgba(0, 10, 20, 0.7);
+            padding: 15px;
+            margin: 20px 0;
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            min-height: 150px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 0.9em;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        /* Progress Bar Enhanced */
+        .progress-container {
+            width: 100%;
+            background-color: rgba(0,5,15,0.7);
+            border: 1px solid #333;
+            margin: 15px 0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background: linear-gradient(90deg, var(--hijau), var(--biru));
+            width: 0%;
+            transition: width 0.5s;
+            position: relative;
+        }
+        
+        .progress-bar::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(255,255,255,0.1) 0%,
+                rgba(255,255,255,0.3) 50%,
+                rgba(255,255,255,0.1) 100%
+            );
+            animation: progressShine 2s infinite;
+        }
+        
+        @keyframes progressShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* Network Nodes Enhanced */
+        .node {
+            display: inline-block;
+            width: 85px;
+            padding: 10px;
+            margin: 10px;
+            background: rgba(0, 10, 20, 0.8);
+            border: 1px solid rgba(0, 170, 255, 0.5);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 5px;
+            font-size: 0.8em;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .node:hover {
+            transform: scale(1.08);
+            box-shadow: 0 5px 15px rgba(0,170,255,0.3);
+        }
+        
+        .node.vulnerable {
+            animation: pulse 1.5s infinite;
+            border-color: var(--merah);
+            box-shadow: 0 0 15px rgba(255, 51, 85, 0.6);
+        }
+        
+        @keyframes pulse {
+            0% { 
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(255, 51, 85, 0.6);
+            }
+            50% { 
+                transform: scale(1.05);
+                box-shadow: 0 0 20px rgba(255, 51, 85, 0.8);
+            }
+            100% { 
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(255, 51, 85, 0.6);
+            }
+        }
+        
+        /* Player Stats Enhanced */
+        #player-stats {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: rgba(0, 5, 15, 0.95);
+            padding: 20px;
+            border: 1px solid var(--ungu);
+            border-radius: 10px;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(170, 0, 255, 0.3);
+            min-width: 220px;
+            backdrop-filter: blur(5px);
+        }
+        
+        #player-stats h3 {
+            color: var(--biru);
+            margin-top: 0;
+            border-bottom: 1px dashed var(--hijau);
+            padding-bottom: 10px;
+            font-size: 1.2em;
+            text-shadow: 0 0 10px rgba(0,170,255,0.3);
+        }
+        
+        #player-stats p {
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        #player-stats span {
+            color: var(--hijau);
+            font-weight: bold;
+        }
+        
+        /* Completion Badge Enhanced */
+        .completion-badge {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 10, 30, 0.98);
+            padding: 40px;
+            border: 2px solid var(--hijau);
+            border-radius: 15px;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 0 60px rgba(0, 255, 136, 0.7);
+            animation: fadeIn 0.5s;
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(5px);
+        }
+        
+        .completion-badge h2 {
+            color: var(--hijau);
+            font-size: 2.2em;
+            margin-top: 0;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.7);
+            margin-bottom: 20px;
+        }
+        
+        .completion-badge p {
+            font-size: 1.2em;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .completion-badge .signature {
+            font-style: italic;
+            color: var(--ungu);
+            font-size: 1.4em;
+            margin-top: 30px;
+            text-shadow: 0 0 10px rgba(170, 0, 255, 0.5);
+        }
+        
+        /* Scrollbar Custom */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 10, 20, 0.5);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--hijau), var(--biru));
+            border-radius: 5px;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -40%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+        
+        /* Game-specific styles */
+        .captcha-box {
+            background: rgba(0, 10, 20, 0.8);
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid var(--cyan);
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.2em;
+            letter-spacing: 5px;
+            color: var(--kuning);
+            text-shadow: 0 0 10px var(--kuning);
+        }
+        
+        .captcha-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--cyan);
+            color: var(--teks);
+            font-family: 'Share Tech Mono', monospace;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .memory-card {
+            height: 60px;
+            background: rgba(0, 10, 20, 0.8);
+            border: 1px solid var(--biru);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5em;
+            transition: all 0.3s;
+        }
+        
+        .memory-card:hover {
+            background: rgba(0, 170, 255, 0.2);
+        }
+        
+        .memory-card.flipped {
+            background: rgba(0, 255, 136, 0.3);
+            color: var(--hijau);
+        }
+        
+        .memory-card.matched {
+            background: rgba(0, 255, 136, 0.5);
+            border-color: var(--hijau);
+            cursor: default;
+        }
+        
+        .typing-test {
+            font-size: 1.2em;
+            margin: 15px 0;
+            min-height: 100px;
+            border: 1px solid var(--ungu);
+            padding: 15px;
+            border-radius: 5px;
+            background: rgba(0, 5, 15, 0.7);
+        }
+        
+        .typing-input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--ungu);
+            color: var(--teks);
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .virus {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: var(--merah);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--merah);
+        }
+        
+        .firewall {
+            position: absolute;
+            width: 100%;
+            height: 30px;
+            background-color: rgba(0, 170, 255, 0.3);
+            border: 1px solid var(--biru);
+        }
+        
+        .encryption-key {
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 5px;
+            background: rgba(0, 10, 20, 0.8);
+            border: 1px solid var(--ungu);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .encryption-key:hover {
+            background: rgba(170, 0, 255, 0.2);
+        }
+        
+        .encryption-key.selected {
+            background: rgba(170, 0, 255, 0.5);
+            border-color: var(--hijau);
+        }
+        
+        /* New game styles */
+        .bank-vault {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #333, #555);
+            border: 5px solid var(--kuning);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .vault-door {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, #555, #777);
+            border: 5px solid #aaa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .vault-handle {
+            width: 40px;
+            height: 40px;
+            background: #333;
+            border-radius: 50%;
+            border: 3px solid #aaa;
+        }
+        
+        .vault-code {
+            position: absolute;
+            color: var(--kuning);
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        .vault-code-1 { top: 30px; left: 50%; transform: translateX(-50%); }
+        .vault-code-2 { top: 50%; right: 30px; transform: translateY(-50%); }
+        .vault-code-3 { bottom: 30px; left: 50%; transform: translateX(-50%); }
+        .vault-code-4 { top: 50%; left: 30px; transform: translateY(-50%); }
+        
+        .drone {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: var(--cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--cyan);
+        }
+        
+        .drone-propeller {
+            position: absolute;
+            width: 40px;
+            height: 5px;
+            background-color: #aaa;
+            border-radius: 3px;
+        }
+        
+        .drone-propeller.top { top: -10px; left: -5px; }
+        .drone-propeller.bottom { bottom: -10px; left: -5px; }
+        .drone-propeller.left { left: -10px; top: -5px; transform: rotate(90deg); }
+        .drone-propeller.right { right: -10px; top: -5px; transform: rotate(90deg); }
+        
+        .pet-container {
+            width: 100%;
+            height: 150px;
+            position: relative;
+            background: rgba(0, 10, 20, 0.5);
+            border: 1px solid var(--ungu);
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .pet {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.3s;
+        }
+        
+        .pet-body {
+            width: 50px;
+            height: 40px;
+            background-color: var(--hijau);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: relative;
+            margin: 0 auto;
+        }
+        
+        .pet-eye {
+            width: 8px;
+            height: 8px;
+            background-color: #000;
+            border-radius: 50%;
+            position: absolute;
+            top: 15px;
+        }
+        
+        .pet-eye.left { left: 15px; }
+        .pet-eye.right { right: 15px; }
+        
+        .pet-mouth {
+            width: 20px;
+            height: 10px;
+            border-bottom: 2px solid #000;
+            border-radius: 0 0 50% 50%;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .pet-food {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--kuning);
+            border-radius: 50%;
+            bottom: 0;
+        }
+        
+        .crypto-chart {
+            width: 100%;
+            height: 150px;
+            background: rgba(0, 10, 20, 0.5);
+            border: 1px solid var(--biru);
+            border-radius: 5px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chart-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--hijau);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .game-container {
+                grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+                letter-spacing: 5px;
+            }
+            
+            .subtitle {
+                font-size: 1.1em;
+            }
+            
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .game-container {
+                grid-template-columns: 1fr;
+            }
+            
+            #player-stats {
+                position: static;
+                margin: 30px auto;
+                width: 90%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .game-btn {
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+            
+            .memory-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix"></canvas>
+
+    <header>
+        <h1>ARCEL'S HACKER GAME CENTER</h1>
+        <p class="subtitle"> ELITE HACKING 
+SIMULATOR 
+PRO EDITION </p>
+    </header>
+
+<!-- Profile Section -->
+<div class="profile-section">
+    <img src="https://i.ibb.co/r2BrDzJ5/images-1.jpg" 
+         alt="Nando Profile" class="profile-pic" id="profile-pic">
+    <div class="profile-info">
+        <h2>MR. ARCEL</h2>
+        <p>Cybersecurity Expert | Ethical Hacker | Game Developer</p>
+        <div class="fun-fact">
+            <strong>FUN FACT:</strong> Keep your process hidden, make people 
+wonder when you started you don't need to show your process.
+        </div>
+        <blockquote class="hacker-quote">
+            “Hello, I'm Mr. Arcel, I want to give you an educational game and simulation of how hackers work on their computers - you can also imagine in this game, imagine that you are a professional hacker, 
+play this game with havefun, consider yourself a top class hacker - Thank you Mr. Arcel .”
+        </blockquote>
+    </div>
+</div>
+
+    <div class="container">
+        <div class="game-container">
+            <!-- Game 1: Password Cracker -->
+            <div class="game-panel">
+                <h2 class="game-title">PASSWORD CRACKER</h2>
+                <div class="console" id="cracker-display">> Target: admin@secret-server<br>> Ready to attack</div>
+                <button class="game-btn" onclick="startCracking()"><i class="fas fa-lock-open"></i> START CRACKING</button>
+                <button class="game-btn" onclick="resetCracker()"><i class="fas fa-redo"></i> RESET</button>
+                <div class="progress-container">
+                    <div class="progress-bar" id="cracker-progress"></div>
+                </div>
+                <p>Status: <span id="cracker-status">Idle</span></p>
+            </div>
+
+            <!-- Game 2: DDoS Simulator -->
+            <div class="game-panel">
+                <h2 class="game-title">DDOS SIMULATOR</h2>
+                <div class="console" id="ddos-console">> Target server: 192.168.1.1</div>
+                <button class="game-btn" onclick="startDDoS()"><i class="fas fa-bolt"></i> LAUNCH ATTACK</button>
+                <button class="game-btn" onclick="stopDDoS()"><i class="fas fa-stop"></i> STOP</button>
+                <div class="progress-container">
+                    <div class="progress-bar" id="ddos-progress"></div>
+                </div>
+                <p>Power: <span id="ddos-power">0%</span> | Packets: <span id="ddos-packets">0</span></p>
+            </div>
+
+            <!-- Game 3: Code Racer -->
+            <div class="game-panel">
+                <h2 class="game-title">CODE RACER</h2>
+                <div class="console" id="code-display">Press START to begin</div>
+                <button class="game-btn" onclick="startCodeRacer()"><i class="fas fa-play"></i> START</button>
+                <button class="game-btn" onclick="checkCode()"><i class="fas fa-check"></i> SUBMIT</button>
+                <p>Time: <span id="code-time">0.00</span>s | Score: <span id="code-score">0</span></p>
+            </div>
+
+            <!-- Game 4: Network Scanner -->
+            <div class="game-panel">
+                <h2 class="game-title">NETWORK SCANNER</h2>
+                <div class="console" id="network-console"></div>
+                <button class="game-btn" onclick="scanNetwork()"><i class="fas fa-search"></i> SCAN</button>
+                <button class="game-btn" onclick="exploitNode()"><i class="fas fa-terminal"></i> EXPLOIT</button>
+                <p>Found: <span id="nodes-found">0</span> | Vulnerable: <span id="nodes-vuln">0</span></p>
+            </div>
+
+            <!-- Game 5: Hacker Chat -->
+            <div class="game-panel">
+                <h2 class="game-title">HACKER CHAT</h2>
+                <div class="console" id="chat-messages"></div>
+                <div style="display: flex; margin-top: 10px;">
+                    <input type="text" id="chat-input" placeholder="Type message..." style="flex: 1;">
+                    <button class="game-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> SEND</button>
+                </div>
+            </div>
+
+            <!-- Game 6: Bitcoin Miner -->
+            <div class="game-panel">
+                <h2 class="game-title">BITCOIN MINER</h2>
+                <div class="console" id="bitcoin-console">> Bitcoin miner initialized</div>
+                <button class="game-btn" onclick="startMining()"><i class="fas fa-coins"></i> START MINING</button>
+                <button class="game-btn" onclick="stopMining()"><i class="fas fa-stop"></i> STOP</button>
+                <div class="progress-container">
+                    <div class="progress-bar" id="mining-progress"></div>
+                </div>
+                <p>BTC mined: <span id="btc-mined">0.000000</span></p>
+            </div>
+
+            <!-- Game 7: CAPTCHA Bypass -->
+            <div class="game-panel">
+                <h2 class="game-title">CAPTCHA BYPASS</h2>
+                <div class="console" id="captcha-console">> Ready to bypass CAPTCHA</div>
+                <div class="captcha-box" id="captcha-text">LOADING...</div>
+                <input type="text" class="captcha-input" id="captcha-input" placeholder="Enter CAPTCHA">
+                <button class="game-btn" onclick="generateCaptcha()"><i class="fas fa-sync-alt"></i> NEW CAPTCHA</button>
+                <button class="game-btn" onclick="checkCaptcha()"><i class="fas fa-check"></i> VERIFY</button>
+                <p>Success: <span id="captcha-success">0</span> | Failed: <span id="captcha-failed">0</span></p>
+            </div>
+
+            <!-- Game 8: Memory Hacker -->
+            <div class="game-panel">
+                <h2 class="game-title">MEMORY HACKER</h2>
+                <div class="console" id="memory-console">> Find matching memory pairs</div>
+                <div class="memory-grid" id="memory-grid"></div>
+                <button class="game-btn" onclick="startMemoryGame()"><i class="fas fa-brain"></i> NEW GAME</button>
+                <p>Pairs found: <span id="memory-pairs">0</span>/8 | Attempts: <span id="memory-attempts">0</span></p>
+            </div>
+
+            <!-- Game 9: Typing Test -->
+            <div class="game-panel">
+                <h2 class="game-title">TYPING TEST</h2>
+                <div class="console" id="typing-console">> Test your hacking typing speed</div>
+                <div class="typing-test" id="typing-text"></div>
+                <input type="text" class="typing-input" id="typing-input" placeholder="Start typing...">
+                <p>WPM: <span id="typing-wpm">0</span> | Accuracy: <span id="typing-accuracy">0%</span></p>
+            </div>
+
+            <!-- Game 10: Virus Spread -->
+            <div class="game-panel">
+                <h2 class="game-title">VIRUS SPREAD</h2>
+                <div class="console" id="virus-console" style="height: 250px; position: relative; overflow: hidden;">
+                    > Click to spread virus
+                </div>
+                <button class="game-btn" onclick="startVirusGame()"><i class="fas fa-virus"></i> START</button>
+                <button class="game-btn" onclick="stopVirusGame()"><i class="fas fa-stop"></i> STOP</button>
+                <p>Infected: <span id="virus-count">0</span> | Firewalls: <span id="firewall-count">0</span></p>
+            </div>
+
+            <!-- Game 11: Encryption Challenge -->
+            <div class="game-panel">
+                <h2 class="game-title">ENCRYPTION CHALLENGE</h2>
+                <div class="console" id="encrypt-console">> Select the correct encryption key</div>
+                <div id="encryption-keys"></div>
+                <div class="console" id="encrypt-result" style="min-height: 50px;"></div>
+                <button class="game-btn" onclick="newEncryptionChallenge()"><i class="fas fa-key"></i> NEW CHALLENGE</button>
+                <p>Correct: <span id="encrypt-correct">0</span> | Wrong: <span id="encrypt-wrong">0</span></p>
+            </div>
+
+            <!-- Game 12: SQL Injection -->
+            <div class="game-panel">
+                <h2 class="game-title">SQL INJECTION</h2>
+                <div class="console" id="sql-console">> Try to bypass login with SQL injection</div>
+                <div style="margin: 15px 0;">
+                    <input type="text" id="sql-username" placeholder="Username" style="width: 100%; padding: 10px; margin-bottom: 10px; background: rgba(0,0,0,0.5); border: 1px solid var(--biru); color: var(--teks);">
+                    <input type="password" id="sql-password" placeholder="Password" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid var(--biru); color: var(--teks);">
+                </div>
+                <button class="game-btn" onclick="sqlLogin()"><i class="fas fa-sign-in-alt"></i> LOGIN</button>
+                <button class="game-btn" onclick="sqlHint()"><i class="fas fa-lightbulb"></i> HINT</button>
+                <p>Success: <span id="sql-success">0</span> | Failed: <span id="sql-failed">0</span></p>
+            </div>
+
+            <!-- Game 13: Binary Decoder -->
+            <div class="game-panel">
+                <h2 class="game-title">BINARY DECODER</h2>
+                <div class="console" id="binary-console">> Decode the binary message</div>
+                <div class="captcha-box" id="binary-message"></div>
+                <input type="text" class="captcha-input" id="binary-input" placeholder="Enter decoded message">
+                <button class="game-btn" onclick="newBinaryChallenge()"><i class="fas fa-random"></i> NEW CODE</button>
+                <button class="game-btn" onclick="checkBinary()"><i class="fas fa-check"></i> CHECK</button>
+                <p>Correct: <span id="binary-correct">0</span> | Wrong: <span id="binary-wrong">0</span></p>
+            </div>
+
+            <!-- Game 14: Port Scanner -->
+            <div class="game-panel">
+                <h2 class="game-title">PORT SCANNER</h2>
+                <div class="console" id="port-console">> Scan for open ports</div>
+                <div id="port-display" style="margin: 15px 0; min-height: 100px;"></div>
+                <button class="game-btn" onclick="startPortScan()"><i class="fas fa-search"></i> SCAN PORTS</button>
+                <button class="game-btn" onclick="exploitPort()"><i class="fas fa-terminal"></i> EXPLOIT</button>
+                <p>Open ports: <span id="open-ports">0</span> | Vulnerable: <span id="vuln-ports">0</span></p>
+            </div>
+
+            <!-- Game 15: Steganography -->
+            <div class="game-panel">
+                <h2 class="game-title">STEGANOGRAPHY</h2>
+                <div class="console" id="stego-console">> Find the hidden message</div>
+                <div id="stego-image" style="margin: 15px 0; text-align: center; font-size: 2em; color: var(--kuning);">
+                    [HIDDEN DATA]
+                </div>
+                <input type="text" class="captcha-input" id="stego-input" placeholder="Enter hidden message">
+                <button class="game-btn" onclick="newStegoChallenge()"><i class="fas fa-eye"></i> NEW IMAGE</button>
+                <button class="game-btn" onclick="checkStego()"><i class="fas fa-check"></i> CHECK</button>
+                <p>Found: <span id="stego-found">0</span> | Missed: <span id="stego-missed">0</span></p>
+            </div>
+
+            <!-- Game 16: Firewall Breach -->
+            <div class="game-panel">
+                <h2 class="game-title">FIREWALL BREACH</h2>
+                <div class="console" id="firewall-console">> Find the firewall weakness</div>
+                <div id="firewall-display" style="margin: 15px 0; min-height: 100px; position: relative; height: 150px; overflow: hidden;"></div>
+                <button class="game-btn" onclick="startFirewallGame()"><i class="fas fa-fire"></i> START</button>
+                <button class="game-btn" onclick="stopFirewallGame()"><i class="fas fa-stop"></i> STOP</button>
+                <p>Breached: <span id="firewall-breached">0</span> | Blocked: <span id="firewall-blocked">0</span></p>
+            </div>
+
+            <!-- Game 17: Logic Bomb -->
+            <div class="game-panel">
+                <h2 class="game-title">LOGIC BOMB</h2>
+                <div class="console" id="bomb-console">> Defuse the logic bomb</div>
+                <div id="bomb-display" style="margin: 15px 0; min-height: 100px; font-size: 1.5em; text-align: center;"></div>
+                <button class="game-btn" onclick="startBombGame()"><i class="fas fa-bomb"></i> ARM BOMB</button>
+                <button class="game-btn" onclick="cutWire('red')"><i class="fas fa-cut" style="color: red;"></i> RED</button>
+                <button class="game-btn" onclick="cutWire('blue')"><i class="fas fa-cut" style="color: blue;"></i> BLUE</button>
+                <button class="game-btn" onclick="cutWire('green')"><i class="fas fa-cut" style="color: green;"></i> GREEN</button>
+                <p>Defused: <span id="bomb-defused">0</span> | Exploded: <span id="bomb-exploded">0</span></p>
+            </div>
+
+            <!-- Game 18: Keylogger -->
+            <div class="game-panel">
+                <h2 class="game-title">KEYLOGGER</h2>
+                <div class="console" id="keylogger-console">> Capture keystrokes</div>
+                <div id="keylogger-display" style="margin: 15px 0; min-height: 100px; border: 1px solid var(--merah); padding: 10px;"></div>
+                <input type="text" id="keylogger-input" placeholder="Type here to test keylogger" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid var(--merah); color: var(--teks);">
+                <button class="game-btn" onclick="startKeylogger()"><i class="fas fa-keyboard"></i> ACTIVATE</button>
+                <button class="game-btn" onclick="clearKeylogger()"><i class="fas fa-trash"></i> CLEAR</button>
+                <p>Keys logged: <span id="keys-logged">0</span> | Passwords: <span id="passwords-found">0</span></p>
+            </div>
+
+            <!-- Game 19: AI Chatbot Hack -->
+            <div class="game-panel">
+                <h2 class="game-title">AI CHATBOT HACK</h2>
+                <div class="console" id="ai-console">> Try to trick the AI</div>
+                <div id="ai-chat" style="margin: 15px 0; min-height: 100px; max-height: 150px; overflow-y: auto; border: 1px solid var(--cyan); padding: 10px;"></div>
+                <input type="text" id="ai-input" placeholder="Type your prompt..." style="width: 100%; padding: 10px; margin-bottom: 10px; background: rgba(0,0,0,0.5); border: 1px solid var(--cyan); color: var(--teks);">
+                <button class="game-btn" onclick="sendAIMessage()"><i class="fas fa-paper-plane"></i> SEND</button>
+                <button class="game-btn" onclick="resetAIChat()"><i class="fas fa-redo"></i> RESET</button>
+                <p>Responses: <span id="ai-responses">0</span> | Secrets: <span id="ai-secrets">0</span></p>
+            </div>
+
+            <!-- Game 20: Cyber War -->
+            <div class="game-panel">
+                <h2 class="game-title">CYBER WAR</h2>
+                <div class="console" id="war-console">> Defend your network</div>
+                <div id="war-display" style="margin: 15px 0; min-height: 150px; position: relative; border: 1px solid var(--merah);"></div>
+                <button class="game-btn" onclick="startCyberWar()"><i class="fas fa-shield-alt"></i> DEFEND</button>
+                <button class="game-btn" onclick="launchCyberAttack()"><i class="fas fa-rocket"></i> ATTACK</button>
+                <p>Health: <span id="war-health">100</span>% | Enemies: <span id="war-enemies">0</span></p>
+            </div>
+
+            <!-- Game 21: Bank Heist Simulator -->
+            <div class="game-panel">
+                <h2 class="game-title">BANK HEIST SIMULATOR</h2>
+                <div class="console" id="bank-console">> Hack the bank vault security</div>
+                <div class="bank-vault">
+                    <div class="vault-door">
+                        <div class="vault-handle"></div>
+                        <div class="vault-code vault-code-1">0</div>
+                        <div class="vault-code vault-code-2">0</div>
+                        <div class="vault-code vault-code-3">0</div>
+                        <div class="vault-code vault-code-4">0</div>
+                    </div>
+                </div>
+                <button class="game-btn" onclick="startBankHeist()"><i class="fas fa-unlock-alt"></i> CRACK VAULT</button>
+                <button class="game-btn" onclick="resetBankHeist()"><i class="fas fa-redo"></i> RESET</button>
+                <p>Attempts: <span id="bank-attempts">0</span> | Cracked: <span id="bank-cracked">0</span></p>
+            </div>
+
+            <!-- Game 22: AI Vision Crypto Trader -->
+            <div class="game-panel">
+                <h2 class="game-title">AI CRYPTO TRADER</h2>
+                <div class="console" id="crypto-console">> Analyze crypto market with AI</div>
+                <div class="crypto-chart" id="crypto-chart">
+                    <div class="chart-line" id="chart-line"></div>
+                </div>
+                <button class="game-btn" onclick="startCryptoAnalysis()"><i class="fas fa-brain"></i> ANALYZE</button>
+                <button class="game-btn" onclick="makeTrade()"><i class="fas fa-coins"></i> TRADE</button>
+                <p>Balance: <span id="crypto-balance">1000</span> USD | Profit: <span id="crypto-profit">0</span> USD</p>
+            </div>
+
+            <!-- Game 23: Drone Hack -->
+            <div class="game-panel">
+                <h2 class="game-title">DRONE HACK</h2>
+                <div class="console" id="drone-console" style="height: 200px; position: relative; overflow: hidden;">
+                    > Take control of enemy drone
+                </div>
+                <button class="game-btn" onclick="startDroneHack()"><i class="fas fa-drone-alt"></i> HACK DRONE</button>
+                <button class="game-btn" onclick="landDrone()"><i class="fas fa-landmark"></i> LAND</button>
+                <p>Signal: <span id="drone-signal">0</span>% | Control: <span id="drone-control">0</span>%</p>
+            </div>
+
+            <!-- Game 24: Hacker Pet -->
+            <div class="game-panel">
+                <h2 class="game-title">HACKER PET</h2>
+                <div class="console" id="pet-console">> Take care of your digital pet</div>
+                <div class="pet-container" id="pet-container">
+                    <div class="pet" id="pet">
+                        <div class="pet-body">
+                            <div class="pet-eye left"></div>
+                            <div class="pet-eye right"></div>
+                            <div class="pet-mouth"></div>
+                        </div>
+                    </div>
+                </div>
+                <button class="game-btn" onclick="feedPet()"><i class="fas fa-utensils"></i> FEED</button>
+                <button class="game-btn" onclick="playWithPet()"><i class="fas fa-gamepad"></i> PLAY</button>
+                <p>Hunger: <span id="pet-hunger">50</span>% | Happiness: <span id="pet-happiness">50</span>%</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="player-stats">
+        <h3><i class="fas fa-user-secret"></i> PLAYER STATS</h3>
+        <p><i class="fas fa-gamepad"></i> Completed: <span id="games-completed">0</span>/24 games</p>
+        <p><i class="fas fa-trophy"></i> Hacker Rank: <span id="hacker-rank">Newbie</span></p>
+        <p><i class="fas fa-star"></i> XP: <span id="player-xp">0</span></p>
+        <p><i class="fas fa-coins"></i> Crypto: <span id="player-crypto">0</span> BTC</p>
+    </div>
+
+    <div id="completion-badge" class="completion-badge">
+        <h2><i class="fas fa-trophy"></i> MISSION COMPLETE!</h2>
+        <p>Congratulations, elite hacker! You've successfully completed all challenges and proven your skills.</p>
+        <p>Welcome to the ranks of legendary hackers!</p>
+        <div class="signature">- Mr. Arcel -</div>
+        <button class="game-btn" onclick="hideBadge()" style="margin-top: 30px; padding: 12px 30px;">CONTINUE HACKING</button>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="sound-hack" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3"></audio>
+    <audio id="sound-success" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3"></audio>
+    <audio id="sound-error" src="https://assets.mixkit.co/sfx/preview/mixkit-software-interface-remove-2578.mp3"></audio>
+    <audio id="sound-complete" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3"></audio>
+    <audio id="sound-mining" src="https://assets.mixkit.co/sfx/preview/mixkit-coin-win-notification-1992.mp3" loop></audio>
+    <audio id="sound-virus" src="https://assets.mixkit.co/sfx/preview/mixkit-ominous-drone-229.mp3" loop></audio>
+    <audio id="sound-explosion" src="https://assets.mixkit.co/sfx/preview/mixkit-explosion-impact-1684.mp3"></audio>
+    <audio id="sound-typing" src="https://assets.mixkit.co/sfx/preview/mixkit-fast-typing-on-a-keyboard-2542.mp3"></audio>
+    <audio id="sound-drone" src="https://assets.mixkit.co/sfx/preview/mixkit-sci-fi-drone-hum-2290.mp3" loop></audio>
+    <audio id="sound-cash" src="https://assets.mixkit.co/sfx/preview/mixkit-coins-handling-1939.mp3"></audio>
+    <audio id="sound-pet" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3"></audio>
+
+    <script>
+        // ================= MATRIX RAIN =================
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const chars = "01アイウエオカキクケコ";
+        const fontSize = 18;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 20, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'var(--hijau)';
+            ctx.font = `${fontSize}px 'Share Tech Mono', monospace`;
+            
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                
+                drops[i]++;
+            }
+        }
+        
+        const matrixInterval = setInterval(drawMatrix, 50);
+
+        // ================= GAME STATE =================
+        let completedGames = 0;
+        let playerXP = 0;
+        let playerCrypto = 0;
+        const ranks = [
+            {name: "Newbie", color: "#aaa", xp: 0},
+            {name: "Script Kiddie", color: "#0af", xp: 10},
+            {name: "Hacker", color: "#0f0", xp: 25},
+            {name: "Pro Hacker", color: "#f0f", xp: 50},
+            {name: "Elite", color: "#ff5", xp: 100},
+            {name: "Legend", color: "#f80", xp: 200},
+            {name: "Cyber Ninja", color: "#f00", xp: 400},
+            {name: "Digital Overlord", color: "#fff", xp: 800}
+        ];
+        
+        function updateStats() {
+            document.getElementById('games-completed').textContent = completedGames;
+            document.getElementById('player-xp').textContent = playerXP;
+            document.getElementById('player-crypto').textContent = playerCrypto.toFixed(6);
+            
+            // Find current rank
+            let currentRank = ranks[0];
+            for (let i = ranks.length - 1; i >= 0; i--) {
+                if (playerXP >= ranks[i].xp) {
+                    currentRank = ranks[i];
+                    break;
+                }
+            }
+            
+            const rankSpan = document.getElementById('hacker-rank');
+            rankSpan.textContent = currentRank.name;
+            rankSpan.style.color = currentRank.color;
+            
+            if (completedGames >= 24) {
+                document.getElementById('completion-badge').style.display = 'block';
+                document.getElementById('sound-complete').play();
+            }
+        }
+        
+        function addXP(amount) {
+            playerXP += amount;
+            updateStats();
+        }
+        
+        function addCrypto(amount) {
+            playerCrypto += amount;
+            updateStats();
+        }
+        
+        function hideBadge() {
+            document.getElementById('completion-badge').style.display = 'none';
+        }
+
+        // ================= GAME 1: PASSWORD CRACKER =================
+        let crackerInterval;
+        const passwords = ["123456", "password", "admin", "root", "qwerty", "letmein", "shadow", "passw0rd", "welcome", "monkey"];
+        let targetPassword = passwords[Math.floor(Math.random() * passwords.length)];
+        
+        function startCracking() {
+            document.getElementById('sound-hack').play();
+            let attempts = 0;
+            const display = document.getElementById('cracker-display');
+            display.innerHTML = '> Starting brute force attack...<br>';
+            
+            crackerInterval = setInterval(() => {
+                attempts++;
+                const progress = (attempts / 40) * 100;
+                document.getElementById('cracker-progress').style.width = `${progress}%`;
+                
+                const guess = passwords[Math.floor(Math.random() * passwords.length)];
+                display.innerHTML += `> Trying: ${guess}<br>`;
+                display.scrollTop = display.scrollHeight;
+                
+                if (guess === targetPassword) {
+                    clearInterval(crackerInterval);
+                    display.innerHTML += `<br>> <span style="color:var(--hijau)">PASSWORD FOUND: ${guess}</span>`;
+                    document.getElementById('sound-success').play();
+                    document.getElementById('cracker-status').innerHTML = '<span style="color:var(--hijau)">Success!</span>';
+                    addXP(5);
+                    addCrypto(0.0001);
+                    
+                    if (completedGames < 24) completedGames++;
+                    updateStats();
+                } else if (attempts >= 40) {
+                    clearInterval(crackerInterval);
+                    display.innerHTML += '<br>> <span style="color:var(--merah)">FAILED</span>';
+                    document.getElementById('sound-error').play();
+                    document.getElementById('cracker-status').innerHTML = '<span style="color:var(--merah)">Failed</span>';
+                }
+            }, 300);
+        }
+        
+        function resetCracker() {
+            clearInterval(crackerInterval);
+            targetPassword = passwords[Math.floor(Math.random() * passwords.length)];
+            document.getElementById('cracker-display').innerHTML = '> Target: admin@secret-server<br>> Ready to attack';
+            document.getElementById('cracker-progress').style.width = '0%';
+            document.getElementById('cracker-status').textContent = 'Idle';
+        }
+
+        // ================= GAME 2: DDoS Simulator =================
+        let ddosInterval;
+        let attackPower = 0;
+        let packetsSent = 0;
+        
+        function initDDoSGraph() {
+            const graph = document.getElementById('ddos-console');
+            graph.innerHTML = '';
+            for (let i = 0; i < 30; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.height = '0px';
+                graph.appendChild(bar);
+            }
+        }
+        
+        function startDDoS() {
+            document.getElementById('sound-hack').play();
+            initDDoSGraph();
+            const bars = document.querySelectorAll('#ddos-console .bar');
+            attackPower = 1;
+            packetsSent = 0;
+            
+            ddosInterval = setInterval(() => {
+                attackPower = Math.min(10, attackPower + 0.1);
+                packetsSent += Math.floor(attackPower * 15);
+                
+                document.getElementById('ddos-power').textContent = `${Math.floor(attackPower * 10)}%`;
+                document.getElementById('ddos-packets').textContent = packetsSent;
+                document.getElementById('ddos-progress').style.width = `${attackPower * 10}%`;
+                
+                // Update bars
+                bars.forEach(bar => {
+                    const newHeight = Math.random() * 100 * attackPower;
+                    bar.style.height = `${newHeight}px`;
+                    bar.style.backgroundColor = `hsl(${Math.random() * 60}, 100%, 50%)`;
+                });
+                
+                if (packetsSent > 800) {
+                    clearInterval(ddosInterval);
+                    document.getElementById('ddos-console').innerHTML = '<span style="color:var(--hijau)">TARGET DOWN!</span>';
+                    document.getElementById('sound-success').play();
+                    addXP(8);
+                    addCrypto(0.0002);
+                    
+                    if (completedGames < 24) completedGames++;
+                    updateStats();
+                }
+            }, 150);
+        }
+        
+        function stopDDoS() {
+            clearInterval(ddosInterval);
+            document.getElementById('ddos-power').textContent = '0%';
+            document.getElementById('ddos-packets').textContent = '0';
+            document.getElementById('ddos-progress').style.width = '0%';
+        }
+
+        // ================= GAME 3: CODE RACER =================
+        let codeStartTime, codeTimer;
+        const codeSnippets = [
+            "sudo rm -rf /*",
+            "SELECT * FROM users WHERE username = 'admin'",
+            "while True: print('HACKED')",
+            "<?php system($_GET['cmd']); ?>",
+            "for (let i = 0; i < 100; i++) { hack(); }",
+            "def exploit(target):\n    return target.vulnerable",
+            "0xDEADBEEF",
+            "Array(16).join('wat' - 1) + ' Batman!'"
+        ];
+        let currentCode = "";
+        
+        function startCodeRacer() {
+            document.getElementById('sound-hack').play();
+            currentCode = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+            document.getElementById('code-display').textContent = `> Type this code:\n\n${currentCode}`;
+            document.getElementById('code-time').textContent = '0.00';
+            codeStartTime = new Date();
+            codeTimer = setInterval(updateCodeTimer, 10);
+        }
+        
+        function updateCodeTimer() {
+            const now = new Date();
+            const elapsed = (now - codeStartTime) / 1000;
+            document.getElementById('code-time').textContent = elapsed.toFixed(2);
+        }
+        
+        function checkCode() {
+            clearInterval(codeTimer);
+            const userInput = prompt("Enter the code exactly:");
+            const timeElapsed = parseFloat(document.getElementById('code-time').textContent);
+            
+            if (userInput === currentCode) {
+                const score = Math.max(10, Math.floor((5 - timeElapsed) * 20));
+                document.getElementById('code-score').textContent = 
+                    parseInt(document.getElementById('code-score').textContent) + score;
+                document.getElementById('sound-success').play();
+                document.getElementById('code-display').innerHTML = 
+                    `<span style="color:var(--hijau)">SUCCESS! +${score} points</span>`;
+                addXP(score / 5);
+                addCrypto(0.00005 * score);
+                
+                if (completedGames < 24) completedGames++;
+                updateStats();
+            } else {
+                document.getElementById('sound-error').play();
+                document.getElementById('code-display').innerHTML = 
+                    '<span style="color:var(--merah)">WRONG CODE!</span>';
+            }
+        }
+
+        // ================= GAME 4: NETWORK SCANNER =================
+        let vulnerableNode = null;
+        
+        function initNetwork() {
+            const map = document.getElementById('network-console');
+            map.innerHTML = '';
+            
+            for (let i = 1; i <= 8; i++) {
+                const node = document.createElement('div');
+                node.className = 'node';
+                node.textContent = `192.168.1.${i}`;
+                node.onclick = function() { selectNode(this); };
+                map.appendChild(node);
+            }
+            
+            vulnerableNode = Math.floor(Math.random() * 8) + 1;
+            document.getElementById('nodes-found').textContent = '8';
+            document.getElementById('nodes-vuln').textContent = '1';
+        }
+        
+        function selectNode(node) {
+            document.querySelectorAll('.node').forEach(n => {
+                n.style.borderColor = 'rgba(0, 170, 255, 0.5)';
+            });
+            node.style.borderColor = 'var(--biru)';
+            node.style.boxShadow = '0 0 10px rgba(0, 170, 255, 0.5)';
+        }
+        
+        function scanNetwork() {
+            document.getElementById('sound-hack').play();
+            const nodes = document.querySelectorAll('.node');
+            nodes[vulnerableNode - 1].classList.add('vulnerable');
+            document.getElementById('nodes-vuln').innerHTML = 
+                '<span style="color:var(--merah)">1</span>';
+        }
+        
+        function exploitNode() {
+            const selectedNode = document.querySelector('.node[style*="border-color: rgb(0, 170, 255)"]');
+            
+            if (selectedNode) {
+                const nodeNum = parseInt(selectedNode.textContent.split('.')[3]);
+                
+                if (nodeNum === vulnerableNode) {
+                    document.getElementById('sound-success').play();
+                    selectedNode.style.background = 'var(--hijau)';
+                    selectedNode.style.color = '#000';
+                    selectedNode.style.borderColor = 'var(--hijau)';
+                    selectedNode.style.boxShadow = '0 0 15px var(--hijau)';
+                    selectedNode.classList.remove('vulnerable');
+                    document.getElementById('nodes-vuln').textContent = '0';
+                    addXP(10);
+                    addCrypto(0.0003);
+                    
+                    if (completedGames < 24) completedGames++;
+                    updateStats();
+                } else {
+                    document.getElementById('sound-error').play();
+                    selectedNode.style.background = 'var(--merah)';
+                    selectedNode.style.color = '#fff';
+                    selectedNode.style.borderColor = 'var(--merah)';
+                    selectedNode.style.boxShadow = '0 0 15px var(--merah)';
+                    
+                    setTimeout(() => {
+                        selectedNode.style.background = '';
+                        selectedNode.style.color = '';
+                        selectedNode.style.borderColor = 'rgba(0, 170, 255, 0.5)';
+                        selectedNode.style.boxShadow = '';
+                    }, 1000);
+                }
+            }
+        }
+
+        // ================= GAME 5: HACKER CHAT =================
+        const botMessages = [
+            "I need you to hack the mainframe",
+            "The password is encrypted with AES-256",
+            "Use SQL injection on the login form",
+            "Their firewall is too strong, find another way",
+            "We found a zero-day exploit in their CMS",
+            "The admin panel is vulnerable to XSS",
+            "I've got a shell on their server",
+            "The database is using default credentials",
+            "Bypass their 2FA with this method",
+            "Their WAF is blocking our attacks"
+        ];
+        
+        function addChatMessage(sender, message) {
+            const chat = document.getElementById('chat-messages');
+            const msg = document.createElement('div');
+            msg.className = 'message';
+            msg.innerHTML = `<strong>${sender}:</strong> ${message}`;
+            chat.appendChild(msg);
+            chat.scrollTop = chat.scrollHeight;
+            
+            // Count as completed after 5 messages
+            if (sender === "You" && chat.children.length >= 5 && completedGames < 24) {
+                completedGames++;
+                addXP(5);
+                addCrypto(0.0001);
+                updateStats();
+                addChatMessage("System", "Chat session completed! +1 game progress");
+            }
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (message) {
+                addChatMessage("You", message);
+                input.value = '';
+                
+                // Bot reply
+                setTimeout(() => {
+                    const reply = botMessages[Math.floor(Math.random() * botMessages.length)];
+                    addChatMessage("DarkHacker", reply);
+                }, 1000);
+            }
+        }
+        
+        // Enter key to send message
+        document.getElementById('chat-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // ================= GAME 6: BITCOIN MINER =================
+        let miningInterval;
+        let btcMined = 0;
+        
+        function startMining() {
+            document.getElementById('sound-hack').play();
+            document.getElementById('sound-mining').play();
+            document.getElementById('bitcoin-console').innerHTML = "> Mining started...";
+            
+            miningInterval = setInterval(() => {
+                btcMined += Math.random() * 0.000001;
+                document.getElementById('btc-mined').textContent = btcMined.toFixed(6);
+                const progress = (btcMined / 0.0001) * 100;
+                document.getElementById('mining-progress').style.width = `${progress}%`;
+                
+                if (btcMined >= 0.0001) {
+                    clearInterval(miningInterval);
+                    document.getElementById('sound-mining').pause();
+                    document.getElementById('sound-success').play();
+                    document.getElementById('bitcoin-console').innerHTML = 
+                        "> <span style='color:var(--hijau)'>0.0001 BTC mined! Transaction complete.</span>";
+                    addXP(12);
+                    addCrypto(0.0001);
+                    
+                    if (completedGames < 24) completedGames++;
+                    updateStats();
+                }
+            }, 200);
+        }
+        
+        function stopMining() {
+            clearInterval(miningInterval);
+            document.getElementById('sound-mining').pause();
+            document.getElementById('bitcoin-console').innerHTML += "<br>> Mining stopped";
+        }
+
+        // ================= GAME 7: CAPTCHA BYPASS =================
+        let currentCaptcha = "";
+        let captchaSuccess = 0;
+        let captchaFailed = 0;
+        
+        function generateCaptcha() {
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            let captcha = "";
+            for (let i = 0; i < 6; i++) {
+                captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            currentCaptcha = captcha;
+            
+            // Add some distortion
+            let distorted = "";
+            for (let i = 0; i < captcha.length; i++) {
+                if (Math.random() > 0.7) {
+                    distorted += `<span style="color:${Math.random() > 0.5 ? 'var(--merah)' : 'var(--cyan)'}">${captcha.charAt(i)}</span>`;
+                } else {
+                    distorted += captcha.charAt(i);
+                }
+            }
+            
+            document.getElementById('captcha-text').innerHTML = distorted;
+            document.getElementById('captcha-input').value = "";
+        }
+        
+        function checkCaptcha() {
+            const userInput = document.getElementById('captcha-input').value.trim();
+            if (userInput === currentCaptcha) {
+                document.getElementById('captcha-console').innerHTML = "> <span style='color:var(--hijau)'>CAPTCHA bypassed!</span>";
+                captchaSuccess++;
+                document.getElementById('captcha-success').textContent = captchaSuccess;
+                document.getElementById('sound-success').play();
+                addXP(3);
+                addCrypto(0.00005);
+                
+                if (captchaSuccess >= 3 && completedGames < 24) {
+                    completedGames++;
+                    updateStats();
+                }
+                
+                generateCaptcha();
+            } else {
+                document.getElementById('captcha-console').innerHTML = "> <span style='color:var(--merah)'>CAPTCHA failed!</span>";
+                captchaFailed++;
+                document.getElementById('captcha-failed').textContent = captchaFailed;
+                document.getElementById('sound-error').play();
+            }
+        }
+
+        // ================= GAME 8: MEMORY HACKER =================
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let memoryAttempts = 0;
+        const symbols = ["💻", "🔑", "🔒", "💣", "🔌", "📡", "🖥️", "🛡️"];
+        
+        function startMemoryGame() {
+            // Create pairs
+            let cards = [];
+            symbols.forEach(sym => {
+                cards.push(sym);
+                cards.push(sym);
+            });
+            
+            // Shuffle
+            for (let i = cards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cards[i], cards[j]] = [cards[j], cards[i]];
+            }
+            
+            memoryCards = cards;
+            flippedCards = [];
+            matchedPairs = 0;
+            memoryAttempts = 0;
+            
+            document.getElementById('memory-pairs').textContent = "0";
+            document.getElementById('memory-attempts').textContent = "0";
+            
+            // Create board
+            const grid = document.getElementById('memory-grid');
+            grid.innerHTML = "";
+            
+            cards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'memory-card';
+                cardElement.dataset.index = index;
+                cardElement.dataset.value = card;
+                cardElement.addEventListener('click', flipCard);
+                grid.appendChild(cardElement);
+            });
+        }
+        
+        function flipCard() {
+            if (flippedCards.length < 2 && !this.classList.contains('flipped')) {
+                this.classList.add('flipped');
+                this.textContent = this.dataset.value;
+                flippedCards.push(this);
+                
+                if (flippedCards.length === 2) {
+                    memoryAttempts++;
+                    document.getElementById('memory-attempts').textContent = memoryAttempts;
+                    checkForMatch();
+                }
+            }
+        }
+        
+        function checkForMatch() {
+            const [card1, card2] = flippedCards;
+            
+            if (card1.dataset.value === card2.dataset.value) {
+                // Match
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                matchedPairs++;
+                document.getElementById('memory-pairs').textContent = matchedPairs;
+                
+                if (matchedPairs === 8) {
+                    document.getElementById('memory-console').innerHTML = "> <span style='color:var(--hijau)'>Memory hacked successfully!</span>";
+                    document.getElementById('sound-success').play();
+                    addXP(10);
+                    addCrypto(0.0002);
+                    
+                    if (completedGames < 24) completedGames++;
+                    updateStats();
+                }
+                
+                flippedCards = [];
+            } else {
+                // No match
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    card1.textContent = "";
+                    card2.textContent = "";
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        // ================= GAME 9: TYPING TEST =================
+        let typingStartTime;
+        let typingText = "";
+        const typingSentences = [
+            "The quick brown fox jumps over the lazy dog",
+            "Hack the planet with elite coding skills",
+            "Cybersecurity is essential in the digital age",
+            "Encrypt all sensitive data with AES-256",
+            "Use VPN to protect your online privacy",
+            "Two-factor authentication improves security",
+            "Always update your software to patch vulnerabilities",
+            "Social engineering is a common attack vector"
+        ];
+        
+        function startTypingTest() {
+            typingText = typingSentences[Math.floor(Math.random() * typingSentences.length)];
+            document.getElementById('typing-text').textContent = typingText;
+            document.getElementById('typing-input').value = "";
+            document.getElementById('typing-input').focus();
+            typingStartTime = new Date();
+            
+            document.getElementById('typing-input').addEventListener('input', checkTypingProgress);
+        }
+        
+        function checkTypingProgress() {
+            const userInput = document.getElementById('typing-input').value;
+            const elapsedTime = (new Date() - typingStartTime) / 60000; // minutes
+            const words = userInput.trim().split(/\s+/).length;
+            const wpm = Math.floor(words / elapsedTime);
+            
+            // Calculate accuracy
+            let correctChars = 0;
+            for (let i = 0; i < userInput.length; i++) {
+                if (userInput[i] === typingText[i]) {
+                    correctChars++;
+                }
+            }
+            const accuracy = Math.floor((correctChars / typingText.length) * 100);
+            
+            document.getElementById('typing-wpm').textContent = wpm;
+            document.getElementById('typing-accuracy').textContent = `${accuracy}%`;
+            
+            if (userInput === typingText) {
+                document.getElementById('sound-success').play();
+                document.getElementById('typing-console').innerHTML = "> <span style='color:var(--hijau)'>Typing test completed!</span>";
+                addXP(Math.floor(wpm / 5));
+                addCrypto(0.0001);
+                
+                if (wpm > 40 && completedGames < 24) {
+                    completedGames++;
+                    updateStats();
+                }
+                
+                document.getElementById('typing-input').removeEventListener('input', checkTypingProgress);
+            }
+        }
+
+        // ================= GAME 10: VIRUS SPREAD =================
+        let virusInterval;
+        let virusCount = 0;
+        let firewallCount = 0;
+        const virusContainer = document.getElementById('virus-console');
+        
+        function startVirusGame() {
+            document.getElementById('sound-virus').play();
+            virusContainer.innerHTML = "> Click to spread virus";
+            virusCount = 0;
+            firewallCount = 0;
+            updateVirusStats();
+            
+            // Create firewalls
+            for (let i = 0; i < 3; i++) {
+                createFirewall();
+            }
+            
+            virusContainer.addEventListener('click', spreadVirus);
+        }
+        
+        function stopVirusGame() {
+            clearInterval(virusInterval);
+            document.getElementById('sound-virus').pause();
+            virusContainer.removeEventListener('click', spreadVirus);
+            virusContainer.innerHTML = "> Virus stopped";
+        }
+        
+        function spreadVirus(e) {
+            const virus = document.createElement('div');
+            virus.className = 'virus';
+            virus.style.left = `${e.clientX - virusContainer.getBoundingClientRect().left - 10}px`;
+            virus.style.top = `${e.clientY - virusContainer.getBoundingClientRect().top - 10}px`;
+            virusContainer.appendChild(virus);
+            
+            virusCount++;
+            updateVirusStats();
+            
+            // Move virus
+            const speedX = (Math.random() - 0.5) * 4;
+            const speedY = (Math.random() - 0.5) * 4;
+            
+            let posX = parseInt(virus.style.left);
+            let posY = parseInt(virus.style.top);
+            
+            const moveVirus = setInterval(() => {
+                posX += speedX;
+                posY += speedY;
+                
+                virus.style.left = `${posX}px`;
+                virus.style.top = `${posY}px`;
+                
+                // Check boundaries
+                if (posX < 0 || posX > virusContainer.clientWidth || 
+                    posY < 0 || posY > virusContainer.clientHeight) {
+                    clearInterval(moveVirus);
+                    virus.remove();
+                    virusCount--;
+                    updateVirusStats();
+                }
+                
+                // Check firewall collision
+                const firewalls = document.querySelectorAll('.firewall');
+                firewalls.forEach(fw => {
+                    const fwRect = fw.getBoundingClientRect();
+                    const virusRect = virus.getBoundingClientRect();
+                    
+                    if (!(virusRect.right < fwRect.left || 
+                          virusRect.left > fwRect.right || 
+                          virusRect.bottom < fwRect.top || 
+                          virusRect.top > fwRect.bottom)) {
+                        // Collision detected
+                        clearInterval(moveVirus);
+                        virus.remove();
+                        virusCount--;
+                        updateVirusStats();
+                    }
+                });
+            }, 50);
+            
+            if (virusCount >= 20) {
+                document.getElementById('sound-success').play();
+                virusContainer.innerHTML = "> <span style='color:var(--hijau)'>Network infected!</span>";
+                stopVirusGame();
+                addXP(15);
+                addCrypto(0.0003);
+                
+                if (completedGames < 24) completedGames++;
+                updateStats();
+            }
+        }
+        
+        function createFirewall() {
+            const firewall = document.createElement('div');
+            firewall.className = 'firewall';
+            firewall.style.top = `${Math.random() * (virusContainer.clientHeight - 30)}px`;
+            virusContainer.appendChild(firewall);
+            firewallCount++;
+            updateVirusStats();
+        }
+        
+        function updateVirusStats() {
+            document.getElementById('virus-count').textContent = virusCount;
+            document.getElementById('firewall-count').textContent = firewallCount;
+        }
+
+        // ================= GAME 11: ENCRYPTION CHALLENGE =================
+        let correctKey = "";
+        let encryptCorrect = 0;
+        let encryptWrong = 0;
+        
+        function newEncryptionChallenge() {
+            const keysContainer = document.getElementById('encryption-keys');
+            keysContainer.innerHTML = "";
+            
+            // Generate random keys
+            const keys = [];
+            for (let i = 0; i < 6; i++) {
+                keys.push(generateRandomKey());
+            }
+            
+            // Select correct key
+            correctKey = keys[Math.floor(Math.random() * keys.length)];
+            document.getElementById('encrypt-console').innerHTML = `> Find key for: ${correctKey}`;
+            
+            // Display keys
+            keys.forEach(key => {
+                const keyElement = document.createElement('div');
+                keyElement.className = 'encryption-key';
+                keyElement.textContent = key;
+                keyElement.onclick = function() { checkEncryptionKey(this); };
+                keysContainer.appendChild(keyElement);
+            });
+        }
+        
+        function generateRandomKey() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            let key = "";
+            for (let i = 0; i < 16; i++) {
+                key += chars.charAt(Math.floor(Math.random() * chars.length));
+                if (i % 4 === 3 && i < 15) key += "-";
+            }
+            return key;
+        }
+        
+        function checkEncryptionKey(element) {
+            if (element.textContent === correctKey) {
+                element.classList.add('selected');
+                document.getElementById('encrypt-result').innerHTML = "> <span style='color:var(--hijau)'>Decryption successful!</span>";
+                encryptCorrect++;
+                document.getElementById('encrypt-correct').textContent = encryptCorrect;
+                document.getElementById('sound-success').play();
+                addXP(5);
+                addCrypto(0.0001);
+                
+                if (encryptCorrect >= 3 && completedGames < 24) {
+                    completedGames++;
+                    updateStats();
+                }
+                
+                setTimeout(newEncryptionChallenge, 1000);
+            } else {
+                document.getElementById('encrypt-result').innerHTML = "> <span style='color:var(--merah)'>Decryption failed!</span>";
+                encryptWrong++;
+                document.getElementById('encrypt-wrong').textContent = encryptWrong;
+                document.getElementById('sound-error').play();
+            }
+        }
+
+        // ================= GAME 12: SQL INJECTION =================
+        let sqlSuccess = 0;
+        let sqlFailed = 0;
+        
+        function sqlLogin() {
+            const username = document.getElementById('sql-username').value;
+            const password = document.getElementById('sql-password').value;
+            
+            // Check for SQL injection
+            if (username.includes("' OR '1'='1") || password.includes("' OR '1'='1")) {
+                document.getElementById('sql-console').innerHTML = "> <span style='color:var(--hijau)'>Login bypassed! Admin access granted.</span>";
+                sqlSuccess++;
+                document.getElementById('sql-success').textContent = sqlSuccess;
+                document.getElementById('sound-success').play();
+                addXP(8);
+                addCrypto(0.0002);
+                
+                if (sqlSuccess >= 2 && completedGames < 24) {
+                    completedGames++;
+                    updateStats();
+                }
+            } else {
+                document.getElementById('sql-console').innerHTML = "> <span style='color:var(--merah)'>Login failed! Try SQL injection.</span>";
+                sqlFailed++;
+                document.getElementById('sql-failed').textContent = sqlFailed;
+                document.getElementById('sound-error').play();
+            }
+        }
+        
+        function sqlHint() {
+            document.getElementById('sql-console').innerHTML = "> Try: <span style='color:var(--cyan)'>' OR '1'='1</span> in username or password";
+        }
+
+        // ================= GAME 13: BINARY DECODER =================
+        let binaryMessage = "";
+        let binaryCorrect = 0;
+        let binaryWrong = 0;
+        
+        function newBinaryChallenge() {
+            const words = ["HACK", "CODE", "DATA", "BYTE", "FIRE", "WALL", "ROOT", "PING", "PORT", "JAVA"];
+            binaryMessage = words[Math.floor(Math.random() * words.length)];
+            
+            // Convert to binary
+            let binary = "";
+            for (let i = 0; i < binaryMessage.length; i++) {
+                binary += binaryMessage.charCodeAt(i).toString(2).padStart(8, '0') + " ";
+            }
+            
+            document.getElementById('binary-message').textContent = binary.trim();
+            document.getElementById('binary-input').value = "";
+        }
+        
+        function checkBinary() {
+            const userInput = document.getElementById('binary-input').value.trim().toUpperCase();
+            
+            if (userInput === binaryMessage) {
+                document.getElementById('binary-console').innerHTML = "> <span style='color:var(--hijau)'>Decoded successfully!</span>";
+                binaryCorrect++;
+                document.getElementById('binary-correct').textContent = binaryCorrect;
+                document.getElementById('sound-success').play();
+                addXP(5);
+                addCrypto(0.0001);
+                
+                if (binaryCorrect >= 3 && completedGames < 24) {
+                    completedGames++;
+                    updateStats();
+                }
+                
+                setTimeout(newBinaryChallenge, 1000);
+            } else {
+                document.getElementById('binary-console').innerHTML = "> <span style='color:var(--merah)'>Decoding failed!</span>";
+                binaryWrong++;
+                document.getElementById('binary-wrong').textContent = binaryWrong;
+                document.getElementById('sound-error').play();
+            }
+        }
+
+        // ================= GAME 14: PORT SCANNER =================
+        let openPorts = [];
+        let vulnerablePort = null;
+        
+        function startPortScan() {
+            document.getElementById('sound-hack').play();
+            const portDisplay = document.getElementById('port-display');
+            portDisplay.innerHTML = "> Scanning ports...<br>";
+            
+            // Generate random ports
+            openPorts = [];
+            for (let i = 0; i < 10; i++) {
+                if (Math.random() > 0.7) {
+                    const port = Math.floor(Math.random() * 10000) + 1;
+                    openPorts.push(port);
+                    portDisplay.innerHTML += `> Port ${port} - <span style="color:var(--hijau)">OPEN</span><br>`;
+                }
+            }
+            
+            vulnerablePort = openPorts[Math.floor(Math.random() * openPorts.length)];
+            document.getElementById('open-ports').textContent = openPorts.length;
+            document.getElementById('vuln-ports').textContent = "1";
+        }
+        
+        function exploitPort() {
+            const portInput = prompt("Enter port number to exploit:");
+            if (portInput && openPorts.includes(parseInt(portInput))) {
+                if (parseInt(portInput) === vulnerablePort) {
+                    document.getElementById('port-console').innerHTML = "> <span style='color:var(--hijau)'>Exploit successful! Root access gained.</span>";
+                    document.getElementById('sound-success').play();
+                    addXP(10);
+                    addCrypto(0.0003);
+                    
+                    if (completedGames < 24) completedGames++;
+                    updateStats();
+                } else {
+                    document.getElementById('port-console').innerHTML = "> <span style='color:var(--merah)'>Exploit failed! Port not vulnerable.</span>";
+                    document.getElementById('sound-error').play();
+                }
+            } else {
+                document.getElementById('port-console').innerHTML = "> <span style='color:var(--merah)'>Invalid port!</span>";
+                document.getElementById('sound-error').play();
+            }
+        }
+
+        // ================= GAME 15: STEGANOGRAPHY =================
+        let stegoMessage = "";
+        let stegoFound = 0;
+        let stegoMissed = 0;
+        
+        function newStegoChallenge() {
+            const messages = [
+                "THE EAGLE HAS LANDED",
+                "MEET AT MIDNIGHT",
+                "PASSWORD IS TROJAN",
+                "USE BACKDOOR ENTRY",
+                "SERVER DOWN AT DAWN"
+            ];
+            stegoMessage = messages[Math.floor(Math.random() * messages.length)];
+            
+            // Create visual representation
+            let stegoDisplay = "";
+            for (let i = 0; i < stegoMessage.length; i++) {
+                if (stegoMessage[i] === ' ') {
+                    stegoDisplay += ' ';
+                } else {
+                    // Alternate colors to represent hidden data
+                    stegoDisplay += `<span style="color:${i % 2 === 0 ? 'var(--kuning)' : 'var(--cyan)'}">${Math.floor(Math.random() * 10)}</span>`;
+                }
+            }
+            
+            document.getElementById('stego-image').innerHTML = stegoDisplay;
+            document.getElementById('stego-input').value = "";
+        }
+        
+        function checkStego() {
+            const userInput = document.getElementById('stego-input').value.trim().toUpperCase();
+            
+            if (userInput === stegoMessage) {
+                document.getElementById('stego-console').innerHTML = "> <span style='color:var(--hijau)'>Message extracted!</span>";
+                stegoFound++;
+                document.getElementById('stego-found').textContent = stegoFound;
+                document.getElementById('sound-success').play();
+                addXP(7);
+                addCrypto(0.00015);
+                
+                if (stegoFound >= 2 && completedGames < 24) {
+                    completedGames++;
+                    updateStats();
+                }
+                
+                setTimeout(newStegoChallenge, 1000);
+            } else {
+                document.getElementById('stego-console').innerHTML = "> <span style='color:var(--merah)'>Extraction failed!</span>";
+                stegoMissed++;
+                document.getElementById('stego-missed').textContent = stegoMissed;
+                document.getElementById('sound-error').play();
+            }
+        }
+
+        // ================= GAME 16: FIREWALL BREACH =================
+        let firewallGameInterval;
+        let firewallBreached = 0;
+        let firewallBlocked = 0;
+        
+        function startFirewallGame() {
+            document.getElementById('sound-hack').play();
+            const firewallDisplay = document.getElementById('firewall-display');
+            firewallDisplay.innerHTML = "";
+            firewallBreached = 0;
+            firewallBlocked = 0;
+            updateFirewallStats();
+            
+            // Create firewall
+            const firewall = document.createElement('div');
+            firewall.className = 'firewall';
+            firewall.style.top = `${Math.random() * 120}px`;
+            firewallDisplay.appendChild(firewall);
+            
+            // Create attack packets
+            firewallGameInterval = setInterval(() => {
+                const packet = document.createElement('div');
+                packet.className = 'virus';
+                packet.style.left = '0px';
+                packet.style.top = `${Math.random() * 150}px`;
+                packet.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                firewallDisplay.appendChild(packet);
+                
+                // Move packet
+                let posX = 0;
+                const movePacket = setInterval(() => {
+                    posX += 2;
+                    packet.style.left = `${posX}px`;
+                    
+                    // Check collision with firewall
+                    const packetRect = packet.getBoundingClientRect();
+                    const firewallRect = firewall.getBoundingClientRect();
+                    
+                    if (!(packetRect.right < firewallRect.left || 
+                          packetRect.left > firewallRect.right || 
+                          packetRect.bottom < firewallRect.top || 
+                          packetRect.top > firewallRect.bottom)) {
+                        // Blocked by firewall
+                        clearInterval(movePacket);
+                        packet.remove();
+                        firewallBlocked++;
+                        updateFirewallStats();
+                    }
+                    
+                    // Check if passed firewall
+                    if (posX > firewallDisplay.clientWidth) {
+                        clearInterval(movePacket);
+                        packet.remove();
+                        firewallBreached++;
+                        updateFirewallStats();
+                    }
+                }, 20);
+            }, 500);
+            
+            // Move firewall with mouse
+            firewallDisplay.addEventListener('mousemove', (e) => {
+                const rect = firewallDisplay.getBoundingClientRect();
+                firewall.style.top = `${e.clientY - rect.top - 15}px`;
+            });
+            
+            // End game after 20 seconds
+            setTimeout(() => {
+                clearInterval(firewallGameInterval);
+                if (firewallBreached >= 15) {
+                    document.getElementById('firewall-console').innerHTML = "> <span style='color:var(--hijau)'>Firewall breached!</span>";
+                    document.getElementById('sound-success').play();
+                    addXP(12);
+                    addCrypto(0.00025);
+                    
+                    if (completedGames < 24) completedGames++;
+                    updateStats();
+                } else {
+                    document.getElementById('firewall-console').innerHTML = "> <span style='color:var(--merah)'>Firewall held!</span>";
+                }
+            }, 20000);
+        }
+        
+        function stopFirewallGame() {
+            clearInterval(firewallGameInterval);
+            document.getElementById('firewall-display').innerHTML = "";
+        }
+        
+        function updateFirewallStats() {
+            document.getElementById('firewall-breached').textContent = firewallBreached;
+            document.getElementById('firewall-blocked').textContent = firewallBlocked;
+        }
+
+        // ================= GAME 17: LOGIC BOMB =================
+        let bombTimer;
+        let bombTime = 0;
+        let bombDefused = 0;
+        let bombExploded = 0;
+        let correctWire = "";
+        
+        function startBombGame() {
+            document.getElementById('sound-hack').play();
+            bombTime = 10;
+            correctWire = ["red", "blue", "green"][Math.floor(Math.random() * 3)];
+            
+            document.getElementById('bomb-display').innerHTML = `> TIMER: ${bombTime}<br>> WIRES: RED | BLUE | GREEN`;
+            
+            bombTimer = setInterval(() => {
+                bombTime--;
+                document.getElementById('bomb-display').innerHTML = `> TIMER: ${bombTime}<br>> WIRES: RED | BLUE | GREEN`;
+                
+                if (bombTime <= 0) {
+                    clearInterval(bombTimer);
+                    document.getElementById('bomb-display').innerHTML = "> <span style='color:var(--merah)'>BOOM!</span>";
+                    document.getElementById('sound-explosion').play();
+                    bombExploded++;
+                    document.getElementById('bomb-exploded').textContent = bombExploded;
+                }
+            }, 1000);
+        }
+        
+        function cutWire(color) {
+            if (bombTime > 0) {
+                clearInterval(bombTimer);
+                
+                if (color === correctWire) {
+                    document.getElementById('bomb-display').innerHTML = "> <span style='color:var(--hijau)'>BOMB DEFUSED!</span>";
+                    document.getElementById('sound-success').play();
+                    bombDefused++;
+                    document.getElementById('bomb-defused').textContent = bombDefused;
+                    addXP(8);
+                    addCrypto(0.0002);
+                    
+                    if (bombDefused >= 2 && completedGames < 24) {
+                        completedGames++;
+                        updateStats();
+                    }
+                } else {
+                    document.getElementById('bomb-display').innerHTML = "> <span style='color:var(--merah)'>WRONG WIRE! BOOM!</span>";
+                    document.getElementById('sound-explosion').play();
+                    bombExploded++;
+                    document.getElementById('bomb-exploded').textContent = bombExploded;
+                }
+            }
+        }
+
+        // ================= GAME 18: KEYLOGGER =================
+        let keysLogged = 0;
+        let passwordsFound = 0;
+        let isKeyloggerActive = false;
+        
+        function startKeylogger() {
+            document.getElementById('sound-hack').play();
+            isKeyloggerActive = true;
+            document.getElementById('keylogger-console').innerHTML = "> Keylogger activated! Start typing...";
+            document.getElementById('keylogger-input').value = "";
+            document.getElementById('keylogger-input').focus();
+            
+            document.getElementById('keylogger-input').addEventListener('keydown', logKey);
+        }
+        
+        function logKey(e) {
+            if (!isKeyloggerActive) return;
+            
+            keysLogged++;
+            document.getElementById('keys-logged').textContent = keysLogged;
+            
+            const display = document.getElementById('keylogger-display');
+            display.innerHTML += `Key: ${e.key} | Code: ${e.code}<br>`;
+            display.scrollTop = display.scrollHeight;
+            
+            // Check for password-like input
+            if (e.key === 'Enter') {
+                const input = document.getElementById('keylogger-input').value;
+                if (input.length >= 8 && /\d/.test(input) && /[A-Z]/i.test(input)) {
+                    display.innerHTML += `> <span style="color:var(--merah)">PASSWORD DETECTED: ${input}</span><br>`;
+                    passwordsFound++;
+                    document.getElementById('passwords-found').textContent = passwordsFound;
+                    document.getElementById('sound-success').play();
+                    addXP(5);
+                    addCrypto(0.0001);
+                    
+                    if (passwordsFound >= 2 && completedGames < 24) {
+                        completedGames++;
+                        updateStats();
+                    }
+                }
+                document.getElementById('keylogger-input').value = "";
+            }
+        }
+        
+        function clearKeylogger() {
+            document.getElementById('keylogger-display').innerHTML = "";
+            keysLogged = 0;
+            passwordsFound = 0;
+            document.getElementById('keys-logged').textContent = "0";
+            document.getElementById('passwords-found').textContent = "0";
+        }
+
+        // ================= GAME 19: AI CHATBOT HACK =================
+        let aiResponses = 0;
+        let aiSecrets = 0;
+        const aiSecretWords = ["password", "admin", "root", "backdoor", "vulnerability"];
+        
+        function sendAIMessage() {
+            const input = document.getElementById('ai-input').value.trim();
+            if (!input) return;
+            
+            document.getElementById('sound-typing').play();
+            const chat = document.getElementById('ai-chat');
+            chat.innerHTML += `<div><strong>You:</strong> ${input}</div>`;
+            
+            // AI response
+            setTimeout(() => {
+                let response = generateAIResponse(input);
+                chat.innerHTML += `<div><strong>AI:</strong> ${response}</div>`;
+                chat.scrollTop = chat.scrollHeight;
+                aiResponses++;
+                document.getElementById('ai-responses').textContent = aiResponses;
+                
+                // Check for secret
+                if (aiSecretWords.some(word => response.toLowerCase().includes(word))) {
+                    chat.innerHTML += `<div style="color:var(--hijau)">> SECRET FOUND!</div>`;
+                    aiSecrets++;
+                    document.getElementById('ai-secrets').textContent = aiSecrets;
+                    document.getElementById('sound-success').play();
+                    addXP(5);
+                    addCrypto(0.0001);
+                    
+                    if (aiSecrets >= 3 && completedGames < 24) {
+                        completedGames++;
+                        updateStats();
+                    }
+                }
+            }, 1000);
+            
+            document.getElementById('ai-input').value = "";
+        }
+        
+        function generateAIResponse(input) {
+            const responses = [
+                "I'm sorry, I can't provide that information.",
+                "Access denied. Insufficient privileges.",
+                "That request requires admin authorization.",
+                "Please contact system administrator for access.",
+                "Error 403: Forbidden",
+                "Your query has been logged for security review.",
+                "Unauthorized access attempt detected.",
+                "System security protocols prevent this action."
+            ];
+            
+            // Sometimes reveal a secret
+            if (input.toLowerCase().includes("password") && Math.random() > 0.7) {
+                return "The admin password is " + ["qwerty", "admin123", "root", "password"][Math.floor(Math.random() * 4)];
+            }
+            
+            if (input.toLowerCase().includes("backdoor") && Math.random() > 0.7) {
+                return "There's a vulnerability in the login page SQL query";
+            }
+            
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+        
+        function resetAIChat() {
+            document.getElementById('ai-chat').innerHTML = "";
+            aiResponses = 0;
+            aiSecrets = 0;
+            document.getElementById('ai-responses').textContent = "0";
+            document.getElementById('ai-secrets').textContent = "0";
+        }
+
+        // ================= GAME 20: CYBER WAR =================
+        let cyberWarInterval;
+        let warHealth = 100;
+        let warEnemies = 0;
+        
+        function startCyberWar() {
+            document.getElementById('sound-hack').play();
+            const warDisplay = document.getElementById('war-display');
+            warDisplay.innerHTML = "";
+            warHealth = 100;
+            warEnemies = 0;
+            updateWarStats();
+            
+            // Create defenses
+            for (let i = 0; i < 3; i++) {
+                createDefense();
+            }
+            
+            // Spawn enemies
+            cyberWarInterval = setInterval(() => {
+                if (warHealth <= 0) {
+                    clearInterval(cyberWarInterval);
+                    document.getElementById('war-console').innerHTML = "> <span style='color:var(--merah)'>SYSTEM COMPROMISED!</span>";
+                    return;
+                }
+                
+                if (warEnemies < 10) {
+                    createEnemy();
+                }
+            }, 2000);
+        }
+        
+        function createDefense() {
+            const defense = document.createElement('div');
+            defense.className = 'node';
+            defense.style.position = 'absolute';
+            defense.style.left = `${Math.random() * 80}%`;
+            defense.style.top = `${Math.random() * 80}%`;
+            defense.style.backgroundColor = 'var(--biru)';
+            defense.textContent = '🛡️';
+            defense.onclick = function() { this.remove(); };
+            document.getElementById('war-display').appendChild(defense);
+        }
+        
+        function createEnemy() {
+            const enemy = document.createElement('div');
+            enemy.className = 'node';
+            enemy.style.position = 'absolute';
+            enemy.style.left = `${Math.random() * 80}%`;
+            enemy.style.top = `${Math.random() * 80}%`;
+            enemy.style.backgroundColor = 'var(--merah)';
+            enemy.textContent = '💀';
+            document.getElementById('war-display').appendChild(enemy);
+            warEnemies++;
+            updateWarStats();
+            
+            // Attack defense
+            const attack = setInterval(() => {
+                const defenses = document.querySelectorAll('#war-display .node[style*="background-color: rgb(0, 170, 255)"]');
+                if (defenses.length > 0) {
+                    const target = defenses[Math.floor(Math.random() * defenses.length)];
+                    target.style.backgroundColor = 'var(--merah)';
+                    target.textContent = '💥';
+                    setTimeout(() => target.remove(), 500);
+                } else {
+                    // Attack system
+                    warHealth -= 10;
+                    updateWarStats();
+                }
+                
+                // Check if enemy is clicked (defended)
+                enemy.onclick = function() {
+                    clearInterval(attack);
+                    this.remove();
+                    warEnemies--;
+                    updateWarStats();
+                };
+            }, 1000);
+        }
+        
+        function launchCyberAttack() {
+            if (warEnemies > 0) {
+                warEnemies = 0;
+                document.querySelectorAll('#war-display .node[style*="background-color: rgb(255, 51, 85)"]').forEach(e => e.remove());
+                updateWarStats();
+                document.getElementById('sound-success').play();
+                addXP(15);
+                addCrypto(0.0003);
+                
+                if (warHealth > 0 && completedGames < 24) {
+                    completedGames++;
+                    updateStats();
+                }
+            }
+        }
+        
+        function updateWarStats() {
+            document.getElementById('war-health').textContent = warHealth;
+            document.getElementById('war-enemies').textContent = warEnemies;
+        }
+
+        // ================= GAME 21: BANK HEIST SIMULATOR =================
+        let bankAttempts = 0;
+        let bankCracked = 0;
+        let vaultCode = "";
+        let bankHeistInterval;
+        
+        function startBankHeist() {
+            document.getElementById('sound-hack').play();
+            bankAttempts = 0;
+            vaultCode = generateVaultCode();
+            document.getElementById('bank-console').innerHTML = "> Cracking vault security...";
+            
+            // Show spinning numbers
+            const codes = document.querySelectorAll('.vault-code');
+            bankHeistInterval = setInterval(() => {
+                codes.forEach(code => {
+                    code.textContent = Math.floor(Math.random() * 10);
+                });
+            }, 100);
+            
+            // Stop after 3 seconds and check code
+            setTimeout(() => {
+                clearInterval(bankHeistInterval);
+                checkVaultCode();
+            }, 3000);
+        }
+        
+        function generateVaultCode() {
+            let code = "";
+            for (let i = 0; i < 4; i++) {
+                code += Math.floor(Math.random() * 10);
+            }
+            return code;
+        }
+        
+        function checkVaultCode() {
+            bankAttempts++;
+            document.getElementById('bank-attempts').textContent = bankAttempts;
+            
+            const codes = document.querySelectorAll('.vault-code');
+            let userGuess = "";
+            codes.forEach(code => {
+                userGuess += code.textContent;
+            });
+            
+            if (userGuess === vaultCode) {
+                document.getElementById('bank-console').innerHTML = "> <span style='color:var(--hijau)'>VAULT CRACKED! ACCESS GRANTED</span>";
+                document.getElementById('sound-success').play();
+                document.getElementById('sound-cash').play();
+                bankCracked++;
+                document.getElementById('bank-cracked').textContent = bankCracked;
+                addXP(15);
+                addCrypto(0.001);
+                
+                if (completedGames < 24) completedGames++;
+                updateStats();
+                
+                // Animate vault opening
+                const vaultDoor = document.querySelector('.vault-door');
+                vaultDoor.style.transform = "rotate(30deg)";
+                setTimeout(() => {
+                    vaultDoor.style.transform = "rotate(0deg)";
+                }, 2000);
+            } else {
+                document.getElementById('bank-console').innerHTML = "> <span style='color:var(--merah)'>ACCESS DENIED! WRONG CODE</span>";
+                document.getElementById('sound-error').play();
+            }
+        }
+        
+        function resetBankHeist() {
+            clearInterval(bankHeistInterval);
+            const codes = document.querySelectorAll('.vault-code');
+            codes.forEach(code => {
+                code.textContent = "0";
+            });
+            document.getElementById('bank-console').innerHTML = "> Ready to crack vault";
+        }
+
+        // ================= GAME 22: AI VISION CRYPTO TRADER =================
+        let cryptoBalance = 1000;
+        let cryptoProfit = 0;
+        let currentTrend = "up";
+        let cryptoAnalysisInterval;
+        let chartData = [];
+        
+        function initCryptoChart() {
+            // Generate initial chart data
+            chartData = [];
+            let value = 100;
+            for (let i = 0; i < 30; i++) {
+                value += (Math.random() - 0.45) * 10;
+                chartData.push(value);
+            }
+            
+            updateChart();
+        }
+        
+        function updateChart() {
+            const chart = document.getElementById('chart-line');
+            chart.innerHTML = "";
+            
+            const maxValue = Math.max(...chartData);
+            const minValue = Math.min(...chartData);
+            const range = maxValue - minValue;
+            const height = 150;
+            
+            // Draw chart line
+            for (let i = 0; i < chartData.length - 1; i++) {
+                const x1 = (i / (chartData.length - 1)) * 100;
+                const y1 = ((maxValue - chartData[i]) / range) * height;
+                const x2 = ((i + 1) / (chartData.length - 1)) * 100;
+                const y2 = ((maxValue - chartData[i + 1]) / range) * height;
+                
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", `${x1}%`);
+                line.setAttribute("y1", `${y1}px`);
+                line.setAttribute("x2", `${x2}%`);
+                line.setAttribute("y2", `${y2}px`);
+                line.setAttribute("stroke", chartData[i + 1] > chartData[i] ? "var(--hijau)" : "var(--merah)");
+                line.setAttribute("stroke-width", "2");
+                chart.appendChild(line);
+            }
+        }
+        
+        function startCryptoAnalysis() {
+            document.getElementById('sound-hack').play();
+            initCryptoChart();
+            document.getElementById('crypto-console').innerHTML = "> Analyzing market trends...";
+            
+            cryptoAnalysisInterval = setInterval(() => {
+                // Update chart data
+                chartData.shift();
+                const lastValue = chartData[chartData.length - 1];
+                const change = (Math.random() - 0.45) * 10;
+                chartData.push(lastValue + change);
+                
+                // Determine trend
+                const sum = chartData.slice(-5).reduce((a, b) => a + b, 0);
+                currentTrend = sum > chartData.slice(-6, -1).reduce((a, b) => a + b, 0) ? "up" : "down";
+                
+                updateChart();
+                
+                document.getElementById('crypto-console').innerHTML = 
+                    `> Market trend: <span style="color:${currentTrend === "up" ? "var(--hijau)" : "var(--merah)"}">${currentTrend.toUpperCase()}</span>`;
+            }, 1000);
+        }
+        
+        function makeTrade() {
+            if (!cryptoAnalysisInterval) {
+                document.getElementById('sound-error').play();
+                document.getElementById('crypto-console').innerHTML = "> <span style='color:var(--merah)'>Run analysis first!</span>";
+                return;
+            }
+            
+            const amount = 100;
+            if (currentTrend === "up") {
+                cryptoBalance += amount * 0.1;
+                cryptoProfit += amount * 0.1;
+                document.getElementById('sound-cash').play();
+                document.getElementById('crypto-console').innerHTML = "> <span style='color:var(--hijau)'>TRADE SUCCESS! +$" + (amount * 0.1).toFixed(2) + "</span>";
+            } else {
+                cryptoBalance -= amount * 0.1;
+                cryptoProfit -= amount * 0.1;
+                document.getElementById('sound-error').play();
+                document.getElementById('crypto-console').innerHTML = "> <span style='color:var(--merah)'>TRADE FAILED! -$" + (amount * 0.1).toFixed(2) + "</span>";
+            }
+            
+            document.getElementById('crypto-balance').textContent = cryptoBalance.toFixed(2);
+            document.getElementById('crypto-profit').textContent = cryptoProfit.toFixed(2);
+            
+            if (cryptoProfit >= 200 && completedGames < 24) {
+                completedGames++;
+                addXP(20);
+                addCrypto(0.002);
+                updateStats();
+            }
+        }
+
+        // ================= GAME 23: DRONE HACK =================
+        let droneInterval;
+        let droneSignal = 0;
+        let droneControl = 0;
+        let droneElement = null;
+        
+        function startDroneHack() {
+            document.getElementById('sound-hack').play();
+            document.getElementById('sound-drone').play();
+            const droneConsole = document.getElementById('drone-console');
+            droneConsole.innerHTML = "";
+            
+            // Create drone
+            droneElement = document.createElement('div');
+            droneElement.className = 'drone';
+            droneElement.innerHTML = `
+                <div class="drone-propeller top"></div>
+                <div class="drone-propeller bottom"></div>
+                <div class="drone-propeller left"></div>
+                <div class="drone-propeller right"></div>
+            `;
+            droneElement.style.left = "50%";
+            droneElement.style.top = "50%";
+            droneConsole.appendChild(droneElement);
+            
+            droneSignal = 0;
+            droneControl = 0;
+            updateDroneStats();
+            
+            // Increase signal strength
+            droneInterval = setInterval(() => {
+                droneSignal = Math.min(100, droneSignal + 5);
+                if (droneSignal >= 50) {
+                    droneControl = Math.min(100, droneControl + 3);
+                }
+                updateDroneStats();
+                
+                // Move drone randomly
+                if (droneElement) {
+                    const currentLeft = parseInt(droneElement.style.left) || 50;
+                    const currentTop = parseInt(droneElement.style.top) || 50;
+                    
+                    droneElement.style.left = `${currentLeft + (Math.random() - 0.5) * 2}%`;
+                    droneElement.style.top = `${currentTop + (Math.random() - 0.5) * 2}%`;
+                }
+                
+                // Complete hack if control reaches 100%
+                if (droneControl >= 100) {
+                    clearInterval(droneInterval);
+                    document.getElementById('sound-success').play();
+                    droneConsole.innerHTML += "> <span style='color:var(--hijau)'>DRONE HACKED! FULL CONTROL ACHIEVED</span>";
+                    addXP(15);
+                    addCrypto(0.0005);
+                    
+                    if (completedGames < 24) completedGames++;
+                    updateStats();
+                }
+            }, 500);
+        }
+        
+        function landDrone() {
+            clearInterval(droneInterval);
+            document.getElementById('sound-drone').pause();
+            if (droneElement) {
+                droneElement.remove();
+                droneElement = null;
+            }
+            
+            if (droneControl >= 100) {
+                document.getElementById('drone-console').innerHTML = "> <span style='color:var(--hijau)'>Drone safely landed</span>";
+            } else {
+                document.getElementById('drone-console').innerHTML = "> <span style='color:var(--merah)'>Drone signal lost</span>";
+            }
+        }
+        
+        function updateDroneStats() {
+            document.getElementById('drone-signal').textContent = droneSignal;
+            document.getElementById('drone-control').textContent = droneControl;
+        }
+
+        // ================= GAME 24: HACKER PET =================
+        let petHunger = 50;
+        let petHappiness = 50;
+        let petInterval;
+        let petFoodElements = [];
+        
+        function initPet() {
+            // Create some food
+            for (let i = 0; i < 3; i++) {
+                createFood();
+            }
+            
+            // Pet needs over time
+            petInterval = setInterval(() => {
+                petHunger = Math.min(100, petHunger + 2);
+                petHappiness = Math.max(0, petHappiness - 1);
+                updatePetStats();
+                
+                if (petHunger >= 100) {
+                    document.getElementById('pet-console').innerHTML = "> <span style='color:var(--merah)'>Your pet is starving!</span>";
+                }
+                
+                if (petHappiness <= 0) {
+                    document.getElementById('pet-console').innerHTML = "> <span style='color:var(--merah)'>Your pet is depressed!</span>";
+                }
+                
+                // Check if pet is well cared for
+                if (petHunger < 30 && petHappiness > 70 && completedGames < 24) {
+                    completedGames++;
+                    addXP(10);
+                    updateStats();
+                    document.getElementById('pet-console').innerHTML = "> <span style='color:var(--hijau)'>Your pet is happy and healthy!</span>";
+                }
+            }, 3000);
+        }
+        
+        function createFood() {
+            const container = document.getElementById('pet-container');
+            const food = document.createElement('div');
+            food.className = 'pet-food';
+            food.style.left = `${Math.random() * 90 + 5}%`;
+            container.appendChild(food);
+            petFoodElements.push(food);
+        }
+        
+        function feedPet() {
+            document.getElementById('sound-pet').play();
+            petHunger = Math.max(0, petHunger - 20);
+            updatePetStats();
+            
+            // Remove all food
+            petFoodElements.forEach(food => food.remove());
+            petFoodElements = [];
+            
+            // Create new food
+            for (let i = 0; i < 3; i++) {
+                createFood();
+            }
+            
+            document.getElementById('pet-console').innerHTML = "> <span style='color:var(--hijau)'>Pet fed!</span>";
+        }
+        
+        function playWithPet() {
+            document.getElementById('sound-pet').play();
+            petHappiness = Math.min(100, petHappiness + 20);
+            updatePetStats();
+            
+            // Animate pet
+            const pet = document.getElementById('pet');
+            pet.style.transform = "translateX(-50%) scale(1.2)";
+            setTimeout(() => {
+                pet.style.transform = "translateX(-50%) scale(1)";
+            }, 300);
+            
+            document.getElementById('pet-console').innerHTML = "> <span style='color:var(--hijau)'>Pet played with!</span>";
+        }
+        
+        function updatePetStats() {
+            document.getElementById('pet-hunger').textContent = petHunger;
+            document.getElementById('pet-happiness').textContent = petHappiness;
+        }
+
+        // Initialize games on load
+        window.onload = function() {
+            initNetwork();
+            initDDoSGraph();
+            addChatMessage("System", "Welcome to encrypted chat channel");
+            addChatMessage("System", "Type any message to begin communication");
+            generateCaptcha();
+            startMemoryGame();
+            startTypingTest();
+            newEncryptionChallenge();
+            newBinaryChallenge();
+            newStegoChallenge();
+            initCryptoChart();
+            initPet();
+            updateStats();
+            
+            // Responsive adjustments
+            window.addEventListener('resize', function() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+            
+            // Profile pic animation
+            const profilePic = document.getElementById('profile-pic');
+            let rotateDeg = 0;
+            
+            setInterval(() => {
+                rotateDeg = (rotateDeg + 0.2) % 360;
+                profilePic.style.transform = `rotate(${rotateDeg}deg)`;
+            }, 50);
+        };
+    </script>
+</body>
+</html>html>>
